@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
-import '../pages/product_details_page.dart';
+import 'package:project_v2/models/product_model.dart';
 
-class CustomCard extends StatelessWidget {
-  CustomCard({
+class MyAdsCustomCard extends StatelessWidget {
+  MyAdsCustomCard({
     super.key,
     //required this.product,
   });
+
   //ProductModel product;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(
-          context,
-          ProductDetailsPage.id,
-        );
+        // Navigator.pushNamed(
+        //   context,
+        //   DisplayProductDetails.id,
+        // );
       },
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 10, left: 8, right: 8),
+            padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -33,8 +34,8 @@ class CustomCard extends StatelessWidget {
             child: Card(
               elevation: 16,
               child: Padding(
-                padding: const EdgeInsets.only(
-                    right: 14, bottom: 12, top: 12, left: 40),
+                padding:
+                    const EdgeInsets.only(right: 14, bottom: 12, top: 12, left: 40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -50,8 +51,8 @@ class CustomCard extends StatelessWidget {
                                 color: Colors.grey, fontSize: 20),
                           ),
                           const Icon(
-                            Icons.favorite_border,
-                            color: Colors.red,
+                            Icons.delete,
+                            color: Colors.black,
                           ),
                         ],
                       ),
@@ -62,30 +63,18 @@ class CustomCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 70),
                       child: Text(
-                        'Price',
-                        //r'$' '${product.price.toString()}',
-                        style: const TextStyle(
-                            color: Colors.blueGrey, fontSize: 22),
-                      ),
+                            'Price',
+                            //r'$' '${product.price.toString()}',
+                            style: const TextStyle(
+                                color: Colors.blueGrey, fontSize: 22),
+                          ),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
+                    SizedBox(height: 8,),
                     Padding(
                       padding: const EdgeInsets.only(left: 70),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Negotiable',
-                            style: const TextStyle(
-                                color: Colors.blueGrey, fontSize: 16),
-                          ),
-                          Text(
-                            'City',
-                            style: const TextStyle(
-                                color: Colors.blueGrey, fontSize: 16),
-                          ),
                           Text(
                             'Date',
                             style: const TextStyle(

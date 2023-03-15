@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project_v2/pages/Account_page.dart';
+import 'package:project_v2/widgets/custom_textfield.dart';
+
+import '../widgets/custom_card.dart';
+import '../widgets/custom_search.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -29,6 +33,19 @@ class HomePage extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
+      ),
+      body: ListView(
+        children: [
+          SearchTextField(hintText: 'Search for products'),
+          SizedBox(
+            height: 8,
+          ),
+          CustomCard(),
+          SizedBox(
+            height: 8,
+          ),
+          CustomCard(),
+        ],
       ),
     );
   }

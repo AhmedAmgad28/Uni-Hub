@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project_v2/pages/Account_page.dart';
 
+import '../widgets/custom_card.dart';
+import '../widgets/favourie_card.dart';
+
 class FavouritesPage extends StatelessWidget {
   const FavouritesPage({super.key});
   static String id = 'Favourites';
@@ -29,6 +32,18 @@ class FavouritesPage extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
+      ),
+      body: ListView(
+        children: [
+          SizedBox(
+            height: 8,
+          ),
+          FavouriteCard(),
+          SizedBox(
+            height: 8,
+          ),
+          FavouriteCard(),
+        ],
       ),
     );
   }

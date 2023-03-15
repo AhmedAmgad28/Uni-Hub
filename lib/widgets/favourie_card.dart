@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import '../pages/product_details_page.dart';
+import 'package:project_v2/models/product_model.dart';
 
-class CustomCard extends StatelessWidget {
-  CustomCard({
+class FavouriteCard extends StatelessWidget {
+  FavouriteCard({
     super.key,
     //required this.product,
   });
+
   //ProductModel product;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(
-          context,
-          ProductDetailsPage.id,
-        );
+        // Navigator.pushNamed(
+        //   context,
+        //   DisplayProductDetails.id,
+        // );
       },
       child: Stack(
         clipBehavior: Clip.none,
@@ -50,7 +51,7 @@ class CustomCard extends StatelessWidget {
                                 color: Colors.grey, fontSize: 20),
                           ),
                           const Icon(
-                            Icons.favorite_border,
+                            Icons.favorite,
                             color: Colors.red,
                           ),
                         ],

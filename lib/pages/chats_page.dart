@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_v2/pages/Account_page.dart';
+import 'package:project_v2/widgets/chat_cards.dart';
+
+import '../helper/constants.dart';
 
 class ChatsPage extends StatelessWidget {
   const ChatsPage({super.key});
@@ -8,6 +11,7 @@ class ChatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: KBackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 10,
@@ -29,6 +33,13 @@ class ChatsPage extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
+      ),
+      body: ListView(
+        children: [
+          SizedBox(height: 4,),
+          ChatCards(),
+          ChatCards(),
+        ],
       ),
     );
   }

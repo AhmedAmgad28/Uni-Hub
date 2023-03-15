@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_v2/pages/login_page.dart';
 import 'package:project_v2/widgets/custom_textfield.dart';
+import '../helper/constants.dart';
 import '../widgets/custom_button.dart';
 import 'navigator_home_page.dart';
 
@@ -11,6 +12,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: KBackgroundColor,
       appBar: AppBar(
         elevation: 10,
         centerTitle: true,
@@ -103,11 +105,11 @@ class RegisterPage extends StatelessWidget {
                   Text("Already Have an Account?"),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, LoginPage.id);
+                      Navigator.pushNamed(context, RegisterPage.id);
                     },
                     child: Text(
                       " Login",
-                      style: TextStyle(color: Colors.lime, fontSize: 16),
+                      style: TextStyle(color: Color.fromARGB(255, 149, 162, 29), fontSize: 16),
                     ),
                   ),
                 ],

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../pages/product_details_page.dart';
+import 'package:project_v2/pages/guest_product_details.dart';
 
-class CustomCard extends StatelessWidget {
-  CustomCard({
+class CustomGuestCard extends StatelessWidget {
+  CustomGuestCard({
     super.key,
     //required this.product,
   });
@@ -13,7 +13,7 @@ class CustomCard extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(
           context,
-          ProductDetailsPage.id,
+          GuestProductDetailsPage.id,
         );
       },
       child: Stack(

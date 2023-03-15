@@ -5,7 +5,9 @@ import 'package:project_v2/pages/navigator_home_page.dart';
 import 'package:project_v2/pages/register_page.dart';
 import 'pages/chats_page.dart';
 import 'pages/favourites_page.dart';
+import 'pages/guest_product_details.dart';
 import 'pages/my_ads_page.dart';
+import 'pages/product_details_page.dart';
 import 'pages/sell_your_product.dart';
 import 'pages/account_page.dart';
 import 'pages/home_page.dart';
@@ -34,6 +36,9 @@ class UniHub extends StatelessWidget {
         ChatsPage.id: (context) => ChatsPage(),
         SellProductPage.id: (context) => SellProductPage(),
         AccountPage.id: (context) => AccountPage(),
+        GuestProductDetailsPage.id: (context) => GuestProductDetailsPage(),
+        ProductDetailsPage.id: (context) => ProductDetailsPage(),
+        
 
       },
       //First page

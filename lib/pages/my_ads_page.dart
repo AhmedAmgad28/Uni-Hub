@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project_v2/pages/Account_page.dart';
 
+import '../widgets/custom_card.dart';
+import '../widgets/myads_custom_cards.dart';
+
 class MyAdsPage extends StatelessWidget {
   const MyAdsPage({super.key});
   static String id = 'MyAdsPage';
@@ -29,6 +32,18 @@ class MyAdsPage extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
+      ),
+      body: ListView(
+        children: [
+          SizedBox(
+            height: 8,
+          ),
+          MyAdsCustomCard(),
+          SizedBox(
+            height: 8,
+          ),
+          MyAdsCustomCard(),
+        ],
       ),
     );
   }

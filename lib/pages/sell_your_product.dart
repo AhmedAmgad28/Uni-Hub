@@ -9,12 +9,13 @@ class SellProductPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 10,
+        automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor: Colors.grey,
         title: Text(
           'Sell Your Product',
           style: TextStyle(
-            color: Colors.greenAccent,
+            color: Colors.limeAccent,
             fontSize: 24,
             fontWeight: FontWeight.w700,
           ),
