@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_v2/pages/Account_page.dart';
+import 'package:project_v2/helper/constants.dart';
 import 'package:project_v2/pages/chats_page.dart';
 import 'package:project_v2/pages/favourites_page.dart';
 import 'package:project_v2/pages/home_page.dart';
@@ -17,16 +17,16 @@ class NavigatorHome extends StatefulWidget {
 class _HomePageState extends State<NavigatorHome> {
   int myIndex = 0;
   List<Widget> widgetList = [
-    HomePage(),
-    MyAdsPage(),
-    SellProductPage(),
-    FavouritesPage(),
-    ChatsPage(),
+    const HomePage(),
+    const MyAdsPage(),
+    const SellProductPage(),
+    const FavouritesPage(),
+    const ChatsPage(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(children: widgetList,index: myIndex,),
+      body: IndexedStack(index: myIndex,children: widgetList,),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
@@ -37,15 +37,14 @@ class _HomePageState extends State<NavigatorHome> {
         iconSize: 28,
         showUnselectedLabels: true,
         currentIndex: myIndex,
-        fixedColor: Colors.limeAccent,
-        backgroundColor: Colors.grey,
+        fixedColor: kPrimaryColor,
+        backgroundColor: kBackgroundColor,
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.black,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Colors.grey,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.ads_click_rounded),

@@ -1,6 +1,5 @@
 import '../helper/api.dart';
 import '../models/product_model.dart';
-import 'package:http/http.dart' as http;
 
 class AllProductsService {
   Future<List<ProductModel>> getAllProducts() async {

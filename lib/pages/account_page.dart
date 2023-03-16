@@ -1,4 +1,7 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
+import 'package:project_v2/helper/constants.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -10,11 +13,11 @@ class AccountPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 10,
         centerTitle: true,
-        backgroundColor: Colors.grey,
-        title: Text(
+        backgroundColor: kBackgroundColor,
+        title: const Text(
           'Account Settings',
           style: TextStyle(
-            color: Colors.greenAccent,
+            color: kPrimaryColor,
             fontSize: 24,
             fontWeight: FontWeight.w700,
           ),

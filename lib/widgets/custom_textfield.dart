@@ -1,4 +1,7 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
+import 'package:project_v2/helper/constants.dart';
 
 class CustomFormTextField extends StatelessWidget {
   CustomFormTextField(
@@ -24,6 +27,12 @@ class CustomFormTextField extends StatelessWidget {
         hintText: hintText!,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 18, horizontal: 18),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(4),
+          ),
+          borderSide: BorderSide(color: kPrimaryColor,width: 2),
+        ),    
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(4),

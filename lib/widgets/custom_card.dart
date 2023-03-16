@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../pages/product_details_page.dart';
 
 class CustomCard extends StatelessWidget {
-  CustomCard({
+  const CustomCard({
     super.key,
     //required this.product,
   });
@@ -43,13 +43,13 @@ class CustomCard extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 70),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
                             'Product Name',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.grey, fontSize: 20),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.favorite_border,
                             color: Colors.red,
                           ),
@@ -59,36 +59,36 @@ class CustomCard extends StatelessWidget {
                     const SizedBox(
                       height: 6,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 70),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 70),
                       child: Text(
                         'Price',
                         //r'$' '${product.price.toString()}',
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: Colors.blueGrey, fontSize: 22),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 70),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
                             'Negotiable',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.blueGrey, fontSize: 16),
                           ),
                           Text(
                             'City',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.blueGrey, fontSize: 16),
                           ),
                           Text(
                             'Date',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.blueGrey, fontSize: 14),
                           ),
                         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_v2/helper/constants.dart';
 
 class SellProductPage extends StatelessWidget {
   const SellProductPage({super.key});
@@ -11,11 +12,11 @@ class SellProductPage extends StatelessWidget {
         elevation: 10,
         automaticallyImplyLeading: false,
         centerTitle: true,
-        backgroundColor: Colors.grey,
-        title: Text(
+        backgroundColor: kPrimaryColor,
+        title: const Text(
           'Sell Your Product',
           style: TextStyle(
-            color: Colors.limeAccent,
+            color: kBackgroundColor,
             fontSize: 24,
             fontWeight: FontWeight.w700,
           ),

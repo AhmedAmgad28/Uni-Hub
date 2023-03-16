@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:project_v2/helper/constants.dart';
 import 'package:project_v2/pages/login_page.dart';
 import 'package:project_v2/pages/register_page.dart';
-
-import '../models/product_model.dart';
-import '../services/get_all_product_service.dart';
-import '../widgets/custom_card.dart';
 import '../widgets/custom_guest_card.dart';
 import '../widgets/custom_search.dart';
 
@@ -16,17 +12,17 @@ class GuestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: KBackgroundColor,
+      backgroundColor: kBackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 10,
         centerTitle: true,
-        backgroundColor: KBackgroundColor,
+        backgroundColor: kBackgroundColor,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
+            const Padding(
+              padding: EdgeInsets.only(left: 16),
               child: Text(
                 'Uni-Hub',
                 style: TextStyle(
@@ -42,7 +38,7 @@ class GuestPage extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(context, RegisterPage.id);
                   },
-                  child: Text(
+                  child: const Text(
                     'Register',
                     style: TextStyle(
                       color: kPrimaryColor,
@@ -51,12 +47,12 @@ class GuestPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(' | ',style: TextStyle(color: Colors.black),),
+                const Text(' | ',style: TextStyle(color: Colors.black),),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, LoginPage.id);
                   },
-                  child: Text(
+                  child: const Text(
                     'Login',
                     style: TextStyle(
                       color: kPrimaryColor,
@@ -72,10 +68,10 @@ class GuestPage extends StatelessWidget {
       ),
       body: ListView(children: [
         SearchTextField(hintText: 'Search for products'),
-        SizedBox(height: 8,),
-        CustomGuestCard(),
-        SizedBox(height: 8,),
-        CustomGuestCard(),
+        const SizedBox(height: 8,),
+        const CustomGuestCard(),
+        const SizedBox(height: 8,),
+        const CustomGuestCard(),
       ],),
     );
   }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_v2/models/product_model.dart';
 
 class FavouriteCard extends StatelessWidget {
-  FavouriteCard({
+  const FavouriteCard({
     super.key,
     //required this.product,
   });
@@ -44,13 +43,13 @@ class FavouriteCard extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 70),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
                             'Product Name',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.grey, fontSize: 20),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.favorite,
                             color: Colors.red,
                           ),
@@ -60,36 +59,36 @@ class FavouriteCard extends StatelessWidget {
                     const SizedBox(
                       height: 6,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 70),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 70),
                       child: Text(
                         'Price',
                         //r'$' '${product.price.toString()}',
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: Colors.blueGrey, fontSize: 22),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 70),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
                             'Negotiable',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.blueGrey, fontSize: 16),
                           ),
                           Text(
                             'City',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.blueGrey, fontSize: 16),
                           ),
                           Text(
                             'Date',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.blueGrey, fontSize: 14),
                           ),
                         ],

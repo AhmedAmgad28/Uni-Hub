@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_v2/helper/constants.dart';
-import 'package:project_v2/models/product_model.dart';
 
 class ChatCards extends StatelessWidget {
-  ChatCards({
+  const ChatCards({
     super.key,
     //required this.product,
   });
@@ -27,7 +26,7 @@ class ChatCards extends StatelessWidget {
               elevation: 6,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: const [
                   Text(
                     'UserName1',
                     style: TextStyle(fontSize: 24, color: kPrimaryColor),

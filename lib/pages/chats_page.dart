@@ -11,31 +11,33 @@ class ChatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: KBackgroundColor,
+      backgroundColor: kBackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 10,
-        centerTitle: true,
-        backgroundColor: Colors.grey,
+        backgroundColor: kPrimaryColor,
         actions: [
           IconButton(
             onPressed: () {
               Navigator.pushNamed(context, AccountPage.id);
             },
-            icon: const Icon(Icons.account_circle_rounded, color: Colors.black),
+            icon: const Icon(Icons.account_circle_rounded, color: kBackgroundColor),
           )
         ],
-        title: const Text(
-          'Chats',
-          style: TextStyle(
-            color: Colors.limeAccent,
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
+        title: const Padding(
+          padding:  EdgeInsets.all(8.0),
+          child: Text(
+            'Chats',
+            style: TextStyle(
+              color: kBackgroundColor,
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ),
       body: ListView(
-        children: [
+        children: const [
           SizedBox(height: 4,),
           ChatCards(),
           ChatCards(),

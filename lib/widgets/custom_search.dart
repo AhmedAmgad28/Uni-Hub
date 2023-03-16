@@ -1,4 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
+
+import '../helper/constants.dart';
 
 class SearchTextField extends StatelessWidget {
   SearchTextField(
@@ -25,11 +29,17 @@ class SearchTextField extends StatelessWidget {
           onTap: (){
 
           },
-          child: const Icon(Icons.search)
+          child: const Icon(Icons.search,color: kPrimaryColor,)
         ),
         hintText: hintText!,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 18, horizontal: 18),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(4),
+          ),
+          borderSide: BorderSide(color: kPrimaryColor,width: 2),
+        ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(4),

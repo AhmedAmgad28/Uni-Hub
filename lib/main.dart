@@ -26,18 +26,18 @@ class UniHub extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       //routes = pages (This make it easier to navigate through them)
       routes: {
-        GuestPage.id: (context) => GuestPage(), //first page display item and navigate to register and login pages
-        RegisterPage.id: (context) => RegisterPage(), //after submiting your info, you will be navigated to NavigateHome page
-        LoginPage.id: (context) => LoginPage(), //after submiting your info, you will be navigated to NavigateHome page
-        NavigatorHome.id: (context) => NavigatorHome(), //have botton menu
-        HomePage.id: (context) => HomePage(),
-        FavouritesPage.id: (context) => FavouritesPage(),
-        MyAdsPage.id: (context) => MyAdsPage(),
-        ChatsPage.id: (context) => ChatsPage(),
-        SellProductPage.id: (context) => SellProductPage(),
-        AccountPage.id: (context) => AccountPage(),
-        GuestProductDetailsPage.id: (context) => GuestProductDetailsPage(),
-        ProductDetailsPage.id: (context) => ProductDetailsPage(),
+        GuestPage.id: (context) => const GuestPage(), //first page display item and navigate to register and login pages
+        RegisterPage.id: (context) => const RegisterPage(), //after submiting your info, you will be navigated to NavigateHome page
+        LoginPage.id: (context) => const LoginPage(), //after submiting your info, you will be navigated to NavigateHome page
+        NavigatorHome.id: (context) => const NavigatorHome(), //have botton menu
+        HomePage.id: (context) => const HomePage(),
+        FavouritesPage.id: (context) => const FavouritesPage(),
+        MyAdsPage.id: (context) => const MyAdsPage(),
+        ChatsPage.id: (context) => const ChatsPage(),
+        SellProductPage.id: (context) => const SellProductPage(),
+        AccountPage.id: (context) => const AccountPage(),
+        GuestProductDetailsPage.id: (context) => const GuestProductDetailsPage(),
+        ProductDetailsPage.id: (context) => const ProductDetailsPage(),
         
 
       },

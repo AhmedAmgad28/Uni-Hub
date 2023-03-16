@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project_v2/helper/constants.dart';
 import 'package:project_v2/pages/Account_page.dart';
-import 'package:project_v2/widgets/custom_textfield.dart';
-
 import '../widgets/custom_card.dart';
 import '../widgets/custom_search.dart';
 
@@ -15,36 +14,38 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 10,
-        centerTitle: true,
-        backgroundColor: Colors.grey,
+        backgroundColor: kPrimaryColor,
         actions: [
           IconButton(
             onPressed: () {
               Navigator.pushNamed(context, AccountPage.id);
             },
-            icon: const Icon(Icons.account_circle_rounded, color: Colors.black),
+            icon: const Icon(Icons.account_circle_rounded, color: kBackgroundColor),
           )
         ],
-        title: const Text(
-          'Uni-Hub',
-          style: TextStyle(
-            color: Colors.limeAccent,
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
+        title: const Padding(
+          padding:  EdgeInsets.all(8.0),
+          child: Text(
+            'UNI-HUB',
+            style: TextStyle(
+              color: kBackgroundColor,
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ),
       body: ListView(
         children: [
           SearchTextField(hintText: 'Search for products'),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
-          CustomCard(),
-          SizedBox(
+          const CustomCard(),
+          const SizedBox(
             height: 8,
           ),
-          CustomCard(),
+          const CustomCard(),
         ],
       ),
     );

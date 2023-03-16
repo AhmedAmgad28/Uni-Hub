@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_v2/pages/guest_product_details.dart';
 
 class CustomGuestCard extends StatelessWidget {
-  CustomGuestCard({
+  const CustomGuestCard({
     super.key,
     //required this.product,
   });
@@ -20,7 +20,7 @@ class CustomGuestCard extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 10, left: 8, right: 8),
+            padding: const EdgeInsets.only(left: 8, right: 8),
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -39,56 +39,47 @@ class CustomGuestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 70),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Product Name',
-                            style: const TextStyle(
-                                color: Colors.grey, fontSize: 20),
-                          ),
-                          const Icon(
-                            Icons.favorite_border,
-                            color: Colors.red,
-                          ),
-                        ],
+                    const Padding(
+                      padding: EdgeInsets.only(left: 70),
+                      child: Text(
+                        'Product Name',
+                        style: TextStyle(
+                            color: Colors.grey, fontSize: 20),
                       ),
                     ),
                     const SizedBox(
                       height: 6,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 70),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 70),
                       child: Text(
                         'Price',
                         //r'$' '${product.price.toString()}',
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: Colors.blueGrey, fontSize: 22),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 70),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
                             'Negotiable',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.blueGrey, fontSize: 16),
                           ),
                           Text(
                             'City',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.blueGrey, fontSize: 16),
                           ),
                           Text(
                             'Date',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.blueGrey, fontSize: 14),
                           ),
                         ],
@@ -100,8 +91,8 @@ class CustomGuestCard extends StatelessWidget {
             ),
           ),
           Positioned(
-            left: 24,
-            top: 12,
+            left: 20,
+            top: 6,
             child: Image.asset(
               'assets/images/book.png',
               height: 110,

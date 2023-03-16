@@ -1,6 +1,9 @@
+// ignore_for_file: unnecessary_string_escapes
+
 import 'package:flutter/material.dart';
 import 'package:project_v2/helper/constants.dart';
 import 'package:project_v2/pages/navigator_home_page.dart';
+import 'package:project_v2/pages/register_page.dart';
 import 'package:project_v2/widgets/custom_button.dart';
 import 'package:project_v2/widgets/custom_textfield.dart';
 
@@ -11,15 +14,16 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: KBackgroundColor,
+      backgroundColor: kBackgroundColor,
       appBar: AppBar(
         elevation: 10,
         centerTitle: true,
-        backgroundColor: Colors.grey,
+        iconTheme: const IconThemeData(color:Colors.black),
+        backgroundColor: kBackgroundColor,
         title: const Text(
           'Login',
           style: TextStyle(
-            color: Colors.limeAccent,
+            color: kPrimaryColor,
             fontSize: 24,
             fontWeight: FontWeight.w700,
           ),
@@ -29,25 +33,25 @@ class LoginPage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: [
-            Text(
+            const Text(
               'Please Fill the following Fields: ',
               style: TextStyle(fontSize: 24, color: Colors.black),
             ),
-            SizedBox(height: 16,),
-            Text(
+            const SizedBox(height: 16,),
+            const Text(
               'Email :',
               style: TextStyle(fontSize: 20, color: Colors.black87),
             ),
-            SizedBox(height: 6,),
+            const SizedBox(height: 6,),
             CustomFormTextField(hintText: 'Email'),
-            SizedBox(height: 12,),
-            Text(
+            const SizedBox(height: 12,),
+            const Text(
               'Password :',
               style: TextStyle(fontSize: 20, color: Colors.black87),
             ),
-            SizedBox(height: 6,),
-            CustomFormTextField(hintText: 'Password'),
-            SizedBox(height: 16,),
+            const SizedBox(height: 6,),
+            CustomFormTextField(hintText: 'Password',obscureText: true,),
+            const SizedBox(height: 16,),
             CustomButton(
               buttonText: 'Login',
               onTap: () {
@@ -58,14 +62,14 @@ class LoginPage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Text("Don\'t have an account?"),
+                  const Text("Don\'t have an account?"),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, LoginPage.id);
+                      Navigator.pushNamed(context, RegisterPage.id);
                     },
-                    child: Text(
+                    child: const Text(
                       " Register",
-                      style: TextStyle(color: Color.fromARGB(255, 149, 162, 29), fontSize: 16),
+                      style: TextStyle(color: kPrimaryColor, fontSize: 16),
                     ),
                   ),
                 ],
