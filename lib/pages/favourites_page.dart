@@ -34,18 +34,18 @@ class FavouritesPage extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        children: const [
-          SizedBox(
-            height: 8,
-          ),
-          FavouriteCard(),
-          SizedBox(
-            height: 8,
-          ),
-          FavouriteCard(),
+      body: Column(
+        children: [
+          Expanded(
+                child: ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return const FavouriteCard();
+                  },
+                ),
+              ),
         ],
       ),
-    );
+    );    
   }
 }

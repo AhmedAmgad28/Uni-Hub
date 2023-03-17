@@ -36,11 +36,16 @@ class ChatsPage extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        children: const [
-          SizedBox(height: 4,),
-          ChatCards(),
-          ChatCards(),
+      body: Column(
+        children: [
+          Expanded(
+                child: ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return const ChatCards();
+                  },
+                ),
+              ),
         ],
       ),
     );

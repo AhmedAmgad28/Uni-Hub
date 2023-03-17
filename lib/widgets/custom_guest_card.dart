@@ -1,12 +1,24 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:project_v2/pages/guest_product_details.dart';
+import 'package:project_v2/services/get_all_products_service.dart';
+
+import '../models/product_model.dart';
 
 class CustomGuestCard extends StatelessWidget {
-  const CustomGuestCard({
+  CustomGuestCard({
     super.key,
-    //required this.product,
+    // required this.title,
+    // required this.price,
+    // required this.address,
+    // required this.date,
+    // required this.product,
   });
-  //ProductModel product;
+  // String title;
+  // num price;
+  // String address;
+  // String date;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -39,23 +51,23 @@ class CustomGuestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 70),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 70),
                       child: Text(
-                        'Product Name',
-                        style: TextStyle(
-                            color: Colors.grey, fontSize: 20),
+                        'title',
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 20),
                       ),
                     ),
                     const SizedBox(
                       height: 6,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 70),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 70),
                       child: Text(
-                        'Price',
+                        'price',
                         //r'$' '${product.price.toString()}',
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.blueGrey, fontSize: 22),
                       ),
                     ),
@@ -66,21 +78,21 @@ class CustomGuestCard extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 70),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text(
                             'Negotiable',
-                            style: TextStyle(
-                                color: Colors.blueGrey, fontSize: 16),
+                            style:
+                                TextStyle(color: Colors.blueGrey, fontSize: 16),
                           ),
                           Text(
-                            'City',
-                            style: TextStyle(
-                                color: Colors.blueGrey, fontSize: 16),
+                            'address',
+                            style:
+                                TextStyle(color: Colors.blueGrey, fontSize: 16),
                           ),
                           Text(
-                            'Date',
-                            style: TextStyle(
-                                color: Colors.blueGrey, fontSize: 14),
+                            'date',
+                            style:
+                                TextStyle(color: Colors.blueGrey, fontSize: 14),
                           ),
                         ],
                       ),

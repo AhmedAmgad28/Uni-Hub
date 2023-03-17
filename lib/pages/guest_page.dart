@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:project_v2/helper/constants.dart';
 import 'package:project_v2/pages/login_page.dart';
 import 'package:project_v2/pages/register_page.dart';
+import '../models/product_model.dart';
+import '../services/get_all_products_service.dart';
 import '../widgets/custom_guest_card.dart';
 import '../widgets/custom_search.dart';
 
 class GuestPage extends StatelessWidget {
-  const GuestPage({super.key});
+  GuestPage({super.key});
   static String id = 'GuestPage';
 
   @override
@@ -47,7 +49,10 @@ class GuestPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Text(' | ',style: TextStyle(color: Colors.black),),
+                const Text(
+                  ' | ',
+                  style: TextStyle(color: Colors.black),
+                ),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, LoginPage.id);
@@ -66,13 +71,41 @@ class GuestPage extends StatelessWidget {
           ],
         ),
       ),
-      body: ListView(children: [
-        SearchTextField(hintText: 'Search for products'),
-        const SizedBox(height: 8,),
-        const CustomGuestCard(),
-        const SizedBox(height: 8,),
-        const CustomGuestCard(),
-      ],),
+      body: ListView(
+        children: [
+          SearchTextField(hintText: 'Search for products'),
+          const SizedBox(
+            height: 8,
+          ),
+          CustomGuestCard(),
+          const SizedBox(
+            height: 8,
+          ),
+          CustomGuestCard(),
+        ],
+      ),
     );
   }
 }
+
+
+// Padding(
+//       padding: const EdgeInsets.only(left: 16, right: 16, top: 90),
+//         child: FutureBuilder<List<ProductModel>>(
+//           future: AllProductsService().getAllProducts(),
+//           builder: (context, snapshot) {
+//             if (snapshot.hasData) {
+//               List<ProductModel> products = snapshot.data!;
+//               return ListView.builder(
+//                 itemCount: products.length,
+//                 itemBuilder: (context, index) {
+//                   return CustomGuestCard(
+//                   );
+//                 },
+//               );
+//             } else {
+//               return const Center(child: CircularProgressIndicator());
+//             }
+//           },
+//         ),
+//       ),

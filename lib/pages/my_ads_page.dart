@@ -34,16 +34,16 @@ class MyAdsPage extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        children: const [
-          SizedBox(
-            height: 8,
-          ),
-          MyAdsCustomCard(),
-          SizedBox(
-            height: 8,
-          ),
-          MyAdsCustomCard(),
+      body: Column(
+        children: [
+          Expanded(
+                child: ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return const MyAdsCustomCard();
+                  },
+                ),
+              ),
         ],
       ),
     );

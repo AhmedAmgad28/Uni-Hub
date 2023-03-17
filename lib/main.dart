@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:project_v2/pages/guest_page.dart';
 import 'package:project_v2/pages/login_page.dart';
@@ -12,7 +14,17 @@ import 'pages/sell_your_product.dart';
 import 'pages/account_page.dart';
 import 'pages/home_page.dart';
 
+class PostHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 void main() {
+  HttpOverrides.global = PostHttpOverrides();
   runApp(const UniHub());
 }
 
@@ -26,7 +38,7 @@ class UniHub extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       //routes = pages (This make it easier to navigate through them)
       routes: {
-        GuestPage.id: (context) => const GuestPage(), //first page display item and navigate to register and login pages
+        GuestPage.id: (context) => GuestPage(), //first page display item and navigate to register and login pages
         RegisterPage.id: (context) => const RegisterPage(), //after submiting your info, you will be navigated to NavigateHome page
         LoginPage.id: (context) => const LoginPage(), //after submiting your info, you will be navigated to NavigateHome page
         NavigatorHome.id: (context) => const NavigatorHome(), //have botton menu

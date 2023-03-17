@@ -20,11 +20,12 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(context, AccountPage.id);
             },
-            icon: const Icon(Icons.account_circle_rounded, color: kBackgroundColor),
+            icon: const Icon(Icons.account_circle_rounded,
+                color: kBackgroundColor),
           )
         ],
         title: const Padding(
-          padding:  EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: Text(
             'UNI-HUB',
             style: TextStyle(
@@ -35,17 +36,20 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
+      body: Column(
         children: [
           SearchTextField(hintText: 'Search for products'),
           const SizedBox(
             height: 8,
           ),
-          const CustomCard(),
-          const SizedBox(
-            height: 8,
+          Expanded(
+            child: ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return const CustomCard();
+              },
+            ),
           ),
-          const CustomCard(),
         ],
       ),
     );
