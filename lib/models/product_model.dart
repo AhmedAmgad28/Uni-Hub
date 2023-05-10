@@ -1,125 +1,174 @@
-import 'dart:convert';
+// ignore_for_file: prefer_collection_literals, camel_case_types
 
-ProductModel welcomeFromJson(String str) => ProductModel.fromJson(json.decode(str));
+class itemsModel {
+  String? status;
+  String? date;
+  int? results;
+  Data? data;
 
-String welcomeToJson(ProductModel data) => json.encode(data.toJson());
+  itemsModel({this.status, this.date, this.results, this.data});
 
-class ProductModel {
-    ProductModel({
-        required this.status,
-        required this.date,
-        required this.results,
-        required this.data,
-    });
+  itemsModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    date = json['date'];
+    results = json['results'];
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+  }
 
-    String status;
-    DateTime date;
-    int results;
-    Data data;
-
-    factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-        status: json["status"],
-        date: DateTime.parse(json["date"]),
-        results: json["results"],
-        data: Data.fromJson(json["data"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "status": status,
-        "date": date.toIso8601String(),
-        "results": results,
-        "data": data.toJson(),
-    };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['status'] = status;
+    data['date'] = date;
+    data['results'] = results;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
 }
 
 class Data {
-    Data({
-        required this.items,
-    });
+  List<Items>? items;
 
-    List<Item> items;
+  Data({this.items});
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
-        items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "items": List<dynamic>.from(items.map((x) => x.toJson())),
-    };
-}
-
-class Item {
-    Item({
-        required this.id,
-        required this.title,
-        required this.price,
-        required this.description,
-        required this.coverImg,
-        required this.imgs,
-        required this.category,
-        required this.address,
-        required this.closed,
-        required this.createAt,
-        this.slug,
-    });
-
-    String id;
-    String title;
-    int price;
-    String description;
-    String coverImg;
-    List<Img> imgs;
-    String category;
-    String address;
-    bool closed;
-    DateTime createAt;
-    String? slug;
-
-    factory Item.fromJson(Map<String, dynamic> json) => Item(
-        id: json["_id"],
-        title: json["title"],
-        price: json["price"],
-        description: json["description"],
-        coverImg: json["coverImg"],
-        imgs: List<Img>.from(json["imgs"].map((x) => imgValues.map[x]!)),
-        category: json["category"],
-        address: json["address"],
-        closed: json["closed"],
-        createAt: DateTime.parse(json["createAt"]),
-        slug: json["slug"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "_id": id,
-        "title": title,
-        "price": price,
-        "description": description,
-        "coverImg": coverImg,
-        "imgs": List<dynamic>.from(imgs.map((x) => imgValues.reverse[x])),
-        "category": category,
-        "address": address,
-        "closed": closed,
-        "createAt": createAt.toIso8601String(),
-        "slug": slug,
-    };
-}
-
-enum Img { IMAGE_1_PNG, IMAGE_2_PNG, IMAGE_3_PNG }
-
-final imgValues = EnumValues({
-    "image-1.png": Img.IMAGE_1_PNG,
-    "image-2.png": Img.IMAGE_2_PNG,
-    "image-3.png": Img.IMAGE_3_PNG
-});
-
-class EnumValues<T> {
-    Map<String, T> map;
-    late Map<T, String> reverseMap;
-
-    EnumValues(this.map);
-
-    Map<T, String> get reverse {
-        reverseMap = map.map((k, v) => MapEntry(v, k));
-        return reverseMap;
+  Data.fromJson(Map<String, dynamic> json) {
+    if (json['items'] != null) {
+      items = <Items>[];
+      json['items'].forEach((v) {
+        items!.add(Items.fromJson(v));
+      });
     }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (items != null) {
+      data['items'] = items!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Items {
+  Location? location;
+  String? sId;
+  String? title;
+  int? price;
+  String? description;
+  String? coverImg;
+  List<String>? imgs;
+  String? category;
+  String? city;
+  bool? closed;
+  User? user;
+  String? createAt;
+
+  Items(
+      {this.location,
+      this.sId,
+      this.title,
+      this.price,
+      this.description,
+      this.coverImg,
+      this.imgs,
+      this.category,
+      this.city,
+      this.closed,
+      this.user,
+      this.createAt});
+
+  Items.fromJson(Map<String, dynamic> json) {
+    location = json['location'] != null
+        ? Location.fromJson(json['location'])
+        : null;
+    sId = json['_id'];
+    title = json['title'];
+    price = json['price'];
+    description = json['description'];
+    coverImg = json['coverImg'];
+    imgs = json['imgs'].cast<String>();
+    category = json['category'];
+    city = json['city'];
+    closed = json['closed'];
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    createAt = json['createAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (location != null) {
+      data['location'] = location!.toJson();
+    }
+    data['_id'] = sId;
+    data['title'] = title;
+    data['price'] = price;
+    data['description'] = description;
+    data['coverImg'] = coverImg;
+    data['imgs'] = imgs;
+    data['category'] = category;
+    data['city'] = city;
+    data['closed'] = closed;
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+    data['createAt'] = createAt;
+    return data;
+  }
+}
+
+class Location {
+  List<double>? coordinates;
+  String? address;
+  String? description;
+  String? geoType;
+
+  Location({this.coordinates, this.address, this.description, this.geoType});
+
+  Location.fromJson(Map<String, dynamic> json) {
+    coordinates = json['coordinates'].cast<double>();
+    address = json['address'];
+    description = json['description'];
+    geoType = json['geoType'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['coordinates'] = coordinates;
+    data['address'] = address;
+    data['description'] = description;
+    data['geoType'] = geoType;
+    return data;
+  }
+}
+
+class User {
+  String? sId;
+  String? name;
+  String? email;
+  String? phone;
+  String? photo;
+  String? joinAt;
+
+  User({this.sId, this.name, this.email, this.phone, this.photo, this.joinAt});
+
+  User.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    email = json['email'];
+    phone = json['phone'];
+    photo = json['photo'];
+    joinAt = json['joinAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['_id'] = sId;
+    data['name'] = name;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['photo'] = photo;
+    data['joinAt'] = joinAt;
+    return data;
+  }
 }
