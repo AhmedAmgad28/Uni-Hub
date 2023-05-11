@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:project_v2/widgets/custom_button.dart';
 import '../helper/constants.dart';
+import '../models/product_model.dart';
+import '../services/single_product_details.dart';
 import 'account_page.dart';
 
-class ProductDetailsPage extends StatelessWidget {
-  const ProductDetailsPage({super.key});
+class ProductDetailsPage extends StatefulWidget {
+  const ProductDetailsPage({Key? key, required this.itemId})
+      : super(key: key);
   static String id = 'ProductDetailsPage';
+  final String itemId;
+
+  @override
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
+}
+
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  late Future<Items> _futureItem;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureItem = getItemById(widget.itemId);
+  }
 
   @override
   Widget build(BuildContext context) {
+    // return FutureBuilder<Items>(
+    //   future: _futureItem,
+    //   builder: (context, snapshot) {
+    //     print(snapshot);
+    //     if (snapshot.hasData) {
+    //       final item = snapshot.data!;
+    //       print(item.title);
+    //       if (item.sId != null) {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
@@ -47,6 +72,7 @@ class ProductDetailsPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
                     Text(
+                      // item.title ?? 'Title',
                       'Product Name',
                       style: TextStyle(
                           fontSize: 28,
@@ -64,6 +90,7 @@ class ProductDetailsPage extends StatelessWidget {
                 padding:
                      EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                 child: Text(
+                  // item.price.toString(),
                   'Price',
                   style: TextStyle(
                       fontSize: 24,
@@ -81,6 +108,7 @@ class ProductDetailsPage extends StatelessWidget {
                       children: const [
                         Icon(Icons.location_on_outlined),
                         Text(
+                          // item.city ?? 'city',
                           ' city',
                           style: TextStyle(
                               fontSize: 16,
@@ -93,6 +121,7 @@ class ProductDetailsPage extends StatelessWidget {
                       children: const [
                         Icon(Icons.date_range_outlined),
                         Text(
+                          // item.createAt.toString().substring(0, 10),
                           ' date',
                           style: TextStyle(
                               fontSize: 16,
@@ -195,6 +224,7 @@ class ProductDetailsPage extends StatelessWidget {
                       height: 6,
                     ),
                     Text(
+                      // item.description ?? 'Decription UnKnown',
                       'This is a description for this product.',
                       style: TextStyle(
                           fontSize: 18,
@@ -313,5 +343,23 @@ class ProductDetailsPage extends StatelessWidget {
         ],
       ),
     );
+      //         } else {
+  //           return Scaffold(
+  //             body: Center(
+  //               child: Text('Null '),
+  //             ),
+  //           );
+  //         }
+  //       } else if (snapshot.hasError) {
+  //         return Center(
+  //           child: Text('${snapshot.error}'),
+  //         );
+  //       } else {
+  //         return const Center(
+  //           child: CircularProgressIndicator(),
+  //         );
+  //       }
+  //     },
+  //   );
   }
 }

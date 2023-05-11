@@ -74,9 +74,13 @@ class _HomePageState extends State<HomePage> {
                           : 'https://item-shopping.c.yimg.jp/i/l/shimamura-gakufu_g0225648';
                       return GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(
+                          Navigator.push(
                             context,
-                            ProductDetailsPage.id,
+                            MaterialPageRoute(
+                              builder: (context) => ProductDetailsPage(
+                                itemId: item.sId!,
+                              ),
+                            ),
                           );
                         },
                         child: Stack(

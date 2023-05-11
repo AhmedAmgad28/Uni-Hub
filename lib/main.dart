@@ -35,8 +35,11 @@ class UniHub extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Uni-Hub',
       debugShowCheckedModeBanner: false,
       //routes = pages (This make it easier to navigate through them)
+      //First page
+      initialRoute: GuestPage.id,
       routes: {
         GuestPage.id: (context) =>
             const GuestPage(), //first page display item and navigate to register and login pages
@@ -51,12 +54,9 @@ class UniHub extends StatelessWidget {
         ChatsPage.id: (context) => const ChatsPage(),
         SellProductPage.id: (context) => const SellProductPage(),
         AccountPage.id: (context) => const AccountPage(),
-        GuestProductDetailsPage.id: (context) =>
-            const GuestProductDetailsPage(),
-        ProductDetailsPage.id: (context) => const ProductDetailsPage(),
+        //GuestProductDetailsPage.id: (context) => GuestProductDetailsPage(itemId: ,),
+        //ProductDetailsPage.id: (context) => const ProductDetailsPage(),
       },
-      //First page
-      initialRoute: GuestPage.id,
     );
   }
 }

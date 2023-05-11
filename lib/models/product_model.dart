@@ -87,7 +87,7 @@ class Items {
     price = json['price'];
     description = json['description'];
     coverImg = json['coverImg'];
-    imgs = json['imgs'].cast<String>();
+    imgs = json['imgs'] == null ? [] : json['imgs'].cast<String>();
     category = json['category'];
     city = json['city'];
     closed = json['closed'];
