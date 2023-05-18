@@ -5,6 +5,7 @@ import '../models/product_model.dart';
 import '../services/get_all_products_service.dart';
 import '../widgets/custom_search.dart';
 import 'product_details_page.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +16,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String reverseDateFormat(String dateString) {
+    final parsedDate = DateTime.parse(dateString);
+    final formatter = DateFormat('dd-MM-yyyy');
+    final formattedDate = formatter.format(parsedDate);
+    return formattedDate;
+  }
   late Future<itemsModel> _futureItemsModel;
 
   @override
@@ -153,9 +160,9 @@ class _HomePageState extends State<HomePage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            const Text(
-                                              'Negotiable',
-                                              style: TextStyle(
+                                            Text(
+                                              item.category!,
+                                              style: const TextStyle(
                                                   color: Colors.blueGrey,
                                                   fontSize: 16),
                                             ),
@@ -166,9 +173,7 @@ class _HomePageState extends State<HomePage> {
                                                   fontSize: 16),
                                             ),
                                             Text(
-                                              item.createAt!
-                                                  .toString()
-                                                  .substring(0, 10),
+                                              reverseDateFormat(item.createAt!),
                                               style: const TextStyle(
                                                   color: Colors.blueGrey,
                                                   fontSize: 14),

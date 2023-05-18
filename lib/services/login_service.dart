@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final storage = FlutterSecureStorage();
 
 Future<Map<String, dynamic>> login(
     {required String email, required String password}) async {
@@ -17,6 +20,11 @@ Future<Map<String, dynamic>> login(
         .transform(json.decoder)
         .cast<Map<String, dynamic>>()
         .first;
+
+    final token = jsonResponse['token'];
+    await storage.write(key: 'token', value: token);
+    print(jsonResponse);
+    print(token);
     return jsonResponse;
   } else {
     throw Exception('Failed to login');

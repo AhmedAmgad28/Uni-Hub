@@ -5,7 +5,7 @@ import 'package:project_v2/pages/register_page.dart';
 import '../models/product_model.dart';
 import '../services/get_all_products_service.dart';
 import '../widgets/custom_search.dart';
-import 'guest_product_details.dart';
+import 'package:intl/intl.dart';
 
 class GuestPage extends StatefulWidget {
   const GuestPage({super.key});
@@ -16,6 +16,12 @@ class GuestPage extends StatefulWidget {
 }
 
 class _GuestPageState extends State<GuestPage> {
+  String reverseDateFormat(String dateString) {
+    final parsedDate = DateTime.parse(dateString);
+    final formatter = DateFormat('dd-MM-yyyy');
+    final formattedDate = formatter.format(parsedDate);
+    return formattedDate;
+  }
   late Future<itemsModel> _futureItemsModel;
 
   @override
@@ -107,13 +113,9 @@ class _GuestPageState extends State<GuestPage> {
                           : 'https://item-shopping.c.yimg.jp/i/l/shimamura-gakufu_g0225648';
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushNamed(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => GuestProductDetailsPage(
-                                itemId: item.sId!,
-                              ),
-                            ),
+                            LoginPage.id
                           );
                         },
                         child: Stack(
@@ -174,9 +176,9 @@ class _GuestPageState extends State<GuestPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            const Text(
-                                              'Negotiable',
-                                              style: TextStyle(
+                                            Text(
+                                              item.category!,
+                                              style: const TextStyle(
                                                   color: Colors.blueGrey,
                                                   fontSize: 16),
                                             ),
@@ -187,9 +189,7 @@ class _GuestPageState extends State<GuestPage> {
                                                   fontSize: 16),
                                             ),
                                             Text(
-                                              item.createAt!
-                                                  .toString()
-                                                  .substring(0, 10),
+                                              reverseDateFormat(item.createAt!),
                                               style: const TextStyle(
                                                   color: Colors.blueGrey,
                                                   fontSize: 14),
