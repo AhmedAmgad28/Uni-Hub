@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,12 +8,14 @@ import 'package:project_v2/services/register_service.dart';
 import 'package:project_v2/widgets/register_form_textfield.dart';
 import '../helper/constants.dart';
 import '../widgets/custom_button.dart';
-import 'navigator_home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   static const String id = 'RegisterPage';
 
+  const RegisterPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _RegisterPageState createState() => _RegisterPageState();
 }
 
@@ -91,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
         phone: phone,
         photo: _imageFile != null ? _imageFile!.path : '',
       );
-      // Navigate to home page if sign up is successful
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, LoginPage.id);
     } catch (e) {
       showDialog(

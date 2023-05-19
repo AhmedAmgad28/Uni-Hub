@@ -84,7 +84,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   color: Colors.black),
                             ),
                           ),
-                          Icon(
+                          const Icon(
                             Icons.favorite_border,
                             color: Colors.red,
                           ),
@@ -234,7 +234,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ),
                           Text(
                             item.description ?? 'Description Unknown',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 18,
                                 color: Colors.black54,
                                 fontWeight: FontWeight.w400),
@@ -270,13 +270,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               children: [
                                 Text(
                                   item.user!.name!,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 18),
                                 ),
                                 Text(
                                   'Member since ${reverseDateFormat(item.user!.joinAt!)}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 14),
                                 ),

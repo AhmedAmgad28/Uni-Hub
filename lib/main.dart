@@ -42,7 +42,7 @@ class UniHub extends StatelessWidget {
         GuestPage.id: (context) =>
             const GuestPage(), //first page display item and navigate to register and login pages
         RegisterPage.id: (context) =>
-            RegisterPage(), //after submiting your info, you will be navigated to NavigateHome page
+            const RegisterPage(), //after submiting your info, you will be navigated to NavigateHome page
         LoginPage.id: (context) =>
             LoginPage(), //after submiting your info, you will be navigated to NavigateHome page
         NavigatorHome.id: (context) => const NavigatorHome(), //have botton menu
@@ -51,7 +51,7 @@ class UniHub extends StatelessWidget {
         MyAdsPage.id: (context) => const MyAdsPage(),
         ChatsPage.id: (context) => const ChatsPage(),
         SellProductPage.id: (context) => const SellProductPage(),
-        AccountPage.id: (context) => AccountPage(),
+        AccountPage.id: (context) => const AccountPage(),
         //GuestProductDetailsPage.id: (context) => GuestProductDetailsPage(itemId: ,),
         //ProductDetailsPage.id: (context) => const ProductDetailsPage(),
       },
