@@ -22,12 +22,33 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final formattedDate = formatter.format(parsedDate);
     return formattedDate;
   }
+  late String coverImgUrl;
   late Future<Items> _futureItem;
 
   @override
   void initState() {
     super.initState();
     _futureItem = getItemById(widget.itemId);
+    coverImgUrl = '';
+        if (widget.itemId == "6467ab02d75256041c2b24bc") {
+                        coverImgUrl =
+                            'https://5.imimg.com/data5/XA/YN/MY-4078569/introduction-to-information-systems-book-500x500.png'; // Replace with the URL for the first product
+                      } else if (widget.itemId == "646794f7912f4e932dec9369") {
+                        coverImgUrl =
+                            'https://m.media-amazon.com/images/I/51HV36xU6yL._SX354_BO1,204,203,200_.jpg'; // Replace with the URL for the second product
+                      } else if (widget.itemId == "645ad66701a6c0099057eb72") {
+                        coverImgUrl =
+                            'https://play-lh.googleusercontent.com/P2VMEenhpIsubG2oWbvuLGrs0GyyzLiDosGTg8bi8htRXg9Uf0eUtHiUjC28p1jgHzo'; // Replace with the URL for the third product
+                      } else if (widget.itemId == "64559a8ede7bed79a9b7526f") {
+                        coverImgUrl =
+                            'https://5.imimg.com/data5/FW/BE/JQ/SELLER-1731045/ms-office-software-500x500.jpg'; // Replace with the URL for the second product
+                      } else if (widget.itemId == "64556d96706250ad9660fbcb") {
+                        coverImgUrl =
+                            'https://www.egytech.net/wp-content/uploads/2021/01/EGYTECH-G3-3500-I7-scaled.jpg'; // Replace with the URL for the second product
+                      } else {
+                        coverImgUrl =
+                            'https://item-shopping.c.yimg.jp/i/l/shimamura-gakufu_g0225648'; // Replace with the default URL
+                      }
   }
 
   @override
@@ -58,9 +79,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 const SizedBox(
                   height: 8,
                 ),
-                Image.asset(
-                  //item.coverImg ?? 
-                  'assets/images/book.png',
+                Image.network(
+                  item.coverImg != null && Uri.parse(item.coverImg!).isAbsolute
+                      ? item.coverImg!
+                      : coverImgUrl,
                   height: 220,
                 ),
                 const SizedBox(
@@ -95,7 +117,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 4, horizontal: 16),
                       child: Text(
-                        '\$${item.price.toString()}',
+                        '£ ${item.price.toString()}',
                         style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w600,

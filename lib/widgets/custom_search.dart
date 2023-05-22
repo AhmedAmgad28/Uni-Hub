@@ -21,6 +21,7 @@ class SearchTextField extends StatelessWidget {
         if (data!.isEmpty) {
           return 'Required Field';
         }
+        return null;
       },
       onChanged: onChanged,
       style: const TextStyle(color: Colors.black),

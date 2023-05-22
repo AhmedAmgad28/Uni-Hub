@@ -228,15 +228,17 @@ class _RegisterPageState extends State<RegisterPage> {
                     onPressed: () {
                       _getImage(ImageSource.gallery);
                     },
-                    icon: const Icon(Icons.photo),
-                    label: const Text('Choose Photo'),
+                    icon: const Icon(Icons.photo,color: kPrimaryColor,),
+                    label: const Text('Choose Photo',style: TextStyle(color: kPrimaryColor),),
+                    style: ElevatedButton.styleFrom(backgroundColor: kBackgroundColor),
                   ),
                   TextButton.icon(
                     onPressed: () {
                       _getImage(ImageSource.camera);
                     },
-                    icon: const Icon(Icons.camera_alt),
-                    label: const Text('Take Photo'),
+                    icon: const Icon(Icons.camera_alt,color: kPrimaryColor,),
+                    label: const Text('Take Photo',style: TextStyle(color: kPrimaryColor),),
+                    style: ElevatedButton.styleFrom(backgroundColor: kBackgroundColor),
                   ),
                 ],
               ),

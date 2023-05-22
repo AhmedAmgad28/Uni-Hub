@@ -24,7 +24,15 @@ Future<Map<String, dynamic>> register({
 
   final response = await request.send();
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
+    final jsonResponse = await response.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .cast<Map<String, dynamic>>()
+        .first;
+    return jsonResponse;
+  }
+  if (response.statusCode == 201) {
     final jsonResponse = await response.stream
         .transform(utf8.decoder)
         .transform(json.decoder)
@@ -32,8 +40,8 @@ Future<Map<String, dynamic>> register({
         .first;
     return jsonResponse;
   } else {
-    print("this is request body ${request.body}");
-    print(response.statusCode);
-    throw Exception('Failed to sign up');
+    final errorResponse = await response.stream.bytesToString();
+    final errorMessage = json.decode(errorResponse)['message'] as String;
+    throw Exception('Failed to sign up: $errorMessage');
   }
 }

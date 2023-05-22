@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project_v2/helper/constants.dart';
 
 class RegisterFormTextField extends StatelessWidget {
-  RegisterFormTextField({
+  const RegisterFormTextField({
     Key? key,
     required this.hintText,
     this.controller,
@@ -29,6 +29,7 @@ class RegisterFormTextField extends StatelessWidget {
         if (data!.isEmpty) {
           return 'Required Field';
         }
+        return null;
       },
       onChanged: onChanged,
       style: const TextStyle(color: Colors.black),

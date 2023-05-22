@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
     final formattedDate = formatter.format(parsedDate);
     return formattedDate;
   }
+
   late Future<itemsModel> _futureItemsModel;
 
   @override
@@ -75,10 +76,32 @@ class _HomePageState extends State<HomePage> {
                     itemCount: data!.items!.length,
                     itemBuilder: (BuildContext context, int index) {
                       final item = data.items![index];
-                      final coverImgUrl = item.coverImg != null &&
+
+                      String coverImgUrl;
+                      if (item.sId == "6467ab02d75256041c2b24bc") {
+                        coverImgUrl =
+                            'https://5.imimg.com/data5/XA/YN/MY-4078569/introduction-to-information-systems-book-500x500.png'; // Replace with the URL for the first product
+                      } else if (item.sId == "646794f7912f4e932dec9369") {
+                        coverImgUrl =
+                            'https://m.media-amazon.com/images/I/51HV36xU6yL._SX354_BO1,204,203,200_.jpg'; // Replace with the URL for the second product
+                      } else if (item.sId == "645ad66701a6c0099057eb72") {
+                        coverImgUrl =
+                            'https://play-lh.googleusercontent.com/P2VMEenhpIsubG2oWbvuLGrs0GyyzLiDosGTg8bi8htRXg9Uf0eUtHiUjC28p1jgHzo'; // Replace with the URL for the third product
+                      } else if (item.sId == "64559a8ede7bed79a9b7526f") {
+                        coverImgUrl =
+                            'https://5.imimg.com/data5/FW/BE/JQ/SELLER-1731045/ms-office-software-500x500.jpg'; // Replace with the URL for the second product
+                      } else if (item.sId == "64556d96706250ad9660fbcb") {
+                        coverImgUrl =
+                            'https://www.egytech.net/wp-content/uploads/2021/01/EGYTECH-G3-3500-I7-scaled.jpg'; // Replace with the URL for the second product
+                      } else {
+                        coverImgUrl =
+                            'https://item-shopping.c.yimg.jp/i/l/shimamura-gakufu_g0225648'; // Replace with the default URL
+                      }
+
+                      final coverImgUrlFinal = item.coverImg != null &&
                               Uri.parse(item.coverImg!).isAbsolute
                           ? item.coverImg!
-                          : 'https://item-shopping.c.yimg.jp/i/l/shimamura-gakufu_g0225648';
+                          : coverImgUrl;
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -127,7 +150,8 @@ class _HomePageState extends State<HomePage> {
                                                 style: const TextStyle(
                                                     color: kPrimaryColor,
                                                     fontSize: 20,
-                                                    overflow: TextOverflow.ellipsis),
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
                                               ),
                                             ),
                                             const Icon(
@@ -144,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                                         padding:
                                             const EdgeInsets.only(left: 70),
                                         child: Text(
-                                          '\$ ${item.price}',
+                                          '£ ${item.price}',
                                           style: const TextStyle(
                                               color: kItemDetails,
                                               fontSize: 22),
@@ -190,8 +214,8 @@ class _HomePageState extends State<HomePage> {
                               left: 20,
                               top: 6,
                               child: Image.network(
-                                coverImgUrl,
-                                height: 110,
+                                coverImgUrlFinal,
+                                height: 100,
                                 width: 90,
                               ),
                             ),
