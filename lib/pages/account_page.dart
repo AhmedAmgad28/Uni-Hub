@@ -6,7 +6,6 @@ import 'package:project_v2/pages/update_account_page.dart';
 import '../services/delete_user.dart';
 import '../services/get_user_info.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'change_password_page.dart';
 
 class AccountPage extends StatefulWidget {
@@ -315,6 +314,64 @@ class _AccountPageState extends State<AccountPage> {
                             width: double.infinity,
                             child: Text(
                               'Delete Account',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: kBackgroundColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Log Out'),
+                                  content: const Text(
+                                      'Are you sure you want to log out?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('Cancel'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: const Text('Log Out'),
+                                      onPressed: () {
+                                          removeToken().then((_) {
+                                            Navigator.of(context)
+                                                .pushNamedAndRemoveUntil(
+                                              GuestPage.id,
+                                              (Route<dynamic> route) => false,
+                                              arguments: {},
+                                            );
+                                          });
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: kPrimaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                          icon: const Icon(
+                            Icons.logout_rounded,
+                            color: kBackgroundColor,
+                          ),
+                          label: const SizedBox(
+                            width: double.infinity,
+                            child: Text(
+                              'Log Out',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: kBackgroundColor,
