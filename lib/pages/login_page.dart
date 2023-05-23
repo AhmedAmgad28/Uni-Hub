@@ -6,6 +6,8 @@ import 'package:project_v2/services/login_service.dart';
 import 'package:project_v2/widgets/custom_button.dart';
 import 'package:project_v2/widgets/custom_textfield.dart';
 
+import 'forgot_password_page.dart';
+
 // ignore: must_be_immutable
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -43,7 +45,7 @@ class LoginPage extends StatelessWidget {
             'Welcome back!',
             style: TextStyle(
               color: kPrimaryColor,
-             fontSize: 24,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -66,13 +68,17 @@ class LoginPage extends StatelessWidget {
             },
             obscureText: true,
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
                 onPressed: () {
-                  // Navigate to the Forgot Password page
+                  Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ForgetPasswordScreen(),
+                              ),
+                            );
                 },
                 child: const Text(
                   'Forgot Password?',
