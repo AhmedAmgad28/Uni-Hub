@@ -42,22 +42,22 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         ),
       );
     } catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content:
-              const Text('Failed to update user data. Please try again later.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
+    final errorMessage = e.toString();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Error'),
+        content: Text('Failed to update user data. Please try again later.\n\nError message: $errorMessage'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {

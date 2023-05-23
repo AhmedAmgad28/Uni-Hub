@@ -27,6 +27,8 @@ Future<Map<String, dynamic>> login(
     await storage.write(key: 'token', value: token);
     return jsonResponse;
   } else {
-    throw Exception('Failed to login');
+    final responseBody = await response.stream.bytesToString();
+    final errorMessage = json.decode(responseBody)['error'] ?? 'Failed to login';
+    throw Exception(errorMessage);
   }
 }

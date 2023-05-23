@@ -25,6 +25,7 @@ Future<void> updateProfile(String name, String phone, String photo) async {
   if (response.statusCode == 200) {
     // Update successful
   } else {
-    throw Exception('Failed to update user data');
+    final message = jsonDecode(response.body)['message'] as String;
+    throw Exception(message);
   }
 }

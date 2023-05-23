@@ -102,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Error'),
-          content: const Text('Failed to sign up.'),
+          content: Text('Failed to sign up. $e'),
           actions: [
             TextButton(
               onPressed: () {
