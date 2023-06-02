@@ -28,12 +28,13 @@ Future<http.Response> addProduct({
   final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/items');
 
   final imgNames = imgs.map((file) => file.path.split('/').last).toList();
+  final coverImg = coverImgPath.split('/').last.replaceAll("'", "");
 
   final data = {
     'title': title,
     'price': price,
     'description': description,
-    'coverImg': coverImgPath,
+    'coverImg': coverImg,
     'imgs': imgNames,
     'category': category,
     'city': city,

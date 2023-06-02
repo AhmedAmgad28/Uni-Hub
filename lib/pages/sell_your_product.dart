@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:project_v2/helper/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/add_product.dart';
+import 'package:geolocator/geolocator.dart';
+
+import 'navigator_home_page.dart';
 
 class SellProductPage extends StatefulWidget {
   const SellProductPage({super.key});
@@ -18,7 +21,6 @@ class _SellProductPageState extends State<SellProductPage> {
   final _titleController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _coverImagePathController = TextEditingController();
   final _categoryController = TextEditingController();
   final _cityController = TextEditingController();
   final _latController = TextEditingController();
@@ -36,13 +38,42 @@ class _SellProductPageState extends State<SellProductPage> {
     }
   }
 
+  Future<Position> _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled and ask for permission if not
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        return Future.error(
+            'Location permissions are denied (actual value: $permission).');
+      }
+    }
+
+    // Get the current position of the user
+    return await Geolocator.getCurrentPosition();
+  }
+
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       final response = await addProduct(
         title: _titleController.text,
         price: double.parse(_priceController.text),
         description: _descriptionController.text,
-        coverImgPath: _coverImagePathController.text,
+        coverImgPath: _selectedImages.first.toString(),
         imgs: _selectedImages,
         category: _categoryController.text,
         city: _cityController.text,
@@ -61,14 +92,18 @@ class _SellProductPageState extends State<SellProductPage> {
           await Future.delayed(const Duration(milliseconds: 50));
         }
         // ignore: use_build_context_synchronously
-        Navigator.of(context).pop();
+        Navigator.pushNamedAndRemoveUntil(
+    context,
+    NavigatorHome.id, // replace '/home' with the name of your home page route
+    (route) => false,
+  );
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
               title: const Text('Product added successfully!'),
-              actions:[
+              actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -129,7 +164,7 @@ class _SellProductPageState extends State<SellProductPage> {
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _titleController,
-                style: const TextStyle(color: kPrimaryColor),
+                style: const TextStyle(color: Colors.black),
                 decoration: const InputDecoration(
                   labelText: 'Title',
                   border: OutlineInputBorder(),
@@ -144,7 +179,7 @@ class _SellProductPageState extends State<SellProductPage> {
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _priceController,
-                style: const TextStyle(color: kPrimaryColor),
+                style: const TextStyle(color: Colors.black),
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Price',
@@ -163,7 +198,7 @@ class _SellProductPageState extends State<SellProductPage> {
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _descriptionController,
-                style: const TextStyle(color: kPrimaryColor),
+                style: const TextStyle(color: Colors.black),
                 maxLines: 5,
                 decoration: const InputDecoration(
                   labelText: 'Description',
@@ -177,19 +212,54 @@ class _SellProductPageState extends State<SellProductPage> {
                 },
               ),
               const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _coverImagePathController,
-                style: const TextStyle(color: kPrimaryColor),
-                decoration: const InputDecoration(
-                  labelText: 'Cover Image Path',
+                const Text(
+                  'Cover Image',
+                  style: TextStyle(fontSize: 18.0),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a cover image path';
-                  }
-                  return null;
-                },
-              ),
+                GestureDetector(
+                  onTap: () {
+                    // Allow the user to select an image from either the camera or the gallery
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return SafeArea(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                leading: const Icon(Icons.camera_alt),
+                                title: const Text('Take Photo'),
+                                onTap: () {
+                                  _getImage(ImageSource.camera);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.photo_library),
+                                title: const Text('Choose from Gallery'),
+                                onTap: () {
+                                  _getImage(ImageSource.gallery);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    height: 150.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: _selectedImages.isEmpty
+                        ? const Icon(Icons.add_a_photo, size: 64.0)
+                        : Image.file(_selectedImages.first),
+                  ),
+                ),
               const SizedBox(height: 16.0),
               const Text('Product Images', style: TextStyle(fontSize: 18)),
               const SizedBox(height: 8.0),
@@ -200,13 +270,15 @@ class _SellProductPageState extends State<SellProductPage> {
                     onPressed: () => _getImage(ImageSource.camera),
                     icon: const Icon(Icons.camera_alt),
                     label: const Text('Take Photo'),
-                    style: ElevatedButton.styleFrom(backgroundColor: kPrimaryColor),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: kPrimaryColor),
                   ),
                   ElevatedButton.icon(
                     onPressed: () => _getImage(ImageSource.gallery),
                     icon: const Icon(Icons.image),
                     label: const Text('Choose from Gallery'),
-                    style: ElevatedButton.styleFrom(backgroundColor: kPrimaryColor),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: kPrimaryColor),
                   ),
                 ],
               ),
@@ -229,6 +301,7 @@ class _SellProductPageState extends State<SellProductPage> {
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _categoryController,
+                style: const TextStyle(color: Colors.black),
                 decoration: const InputDecoration(
                   labelText: 'Category',
                   border: OutlineInputBorder(),
@@ -237,46 +310,88 @@ class _SellProductPageState extends State<SellProductPage> {
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _cityController,
+                style: const TextStyle(color: Colors.black),
                 decoration: const InputDecoration(
                   labelText: 'City',
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _latController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Latitude',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a latitude';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid latitude';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _lngController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Longitude',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a longitude';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid longitude';
-                  }
-                  return null;
-                },
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Location',
+                    style: TextStyle(fontSize: 18,color: Colors.black),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Row(
+                    children: [
+                      IconButton(
+                        color: kPrimaryColor,
+                        icon: const Icon(Icons.location_on),
+                        onPressed: () async {
+                          final position = await _getCurrentLocation();
+                          setState(() {
+                            _latController.text = position.latitude.toString();
+                            _lngController.text = position.longitude.toString();
+                          });
+                        },
+                      ),
+                      const SizedBox(width: 8.0),
+                      const Text(
+                        'Latitude:',
+                        style: TextStyle(fontSize: 16,color: Colors.black),
+                      ),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _latController,
+                          style: const TextStyle(color: Colors.black),
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Latitude',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a latitude';
+                            }
+                            if (double.tryParse(value) == null) {
+                              return 'Please enter a valid latitude';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 8.0),
+                      const Text(
+                        'Longitude:',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _lngController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Longitude',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a longitude';
+                            }
+                            if (double.tryParse(value) == null) {
+                              return 'Please enter a valid longitude';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
               const SizedBox(height: 16.0),
               TextFormField(

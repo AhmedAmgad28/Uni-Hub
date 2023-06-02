@@ -74,7 +74,7 @@ class _MyAdsPageState extends State<MyAdsPage> {
             );
           } else {
             final user = snapshot.data;
-            final items = user!['items'];
+            final items = user!['items'].where((item) => item['approved'] != false).toList();
 
             return Column(
               children: [

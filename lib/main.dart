@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:project_v2/pages/guest_page.dart';
 import 'package:project_v2/pages/login_page.dart';
@@ -21,8 +21,10 @@ class PostHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = PostHttpOverrides();
+  await GeolocatorPlatform.instance.isLocationServiceEnabled();
   runApp(const UniHub());
 }
 
