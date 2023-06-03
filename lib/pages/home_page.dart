@@ -3,6 +3,7 @@ import 'package:project_v2/helper/constants.dart';
 import 'package:project_v2/pages/Account_page.dart';
 import 'package:project_v2/pages/books_page.dart';
 import 'package:project_v2/pages/elctronics_page.dart';
+import 'package:project_v2/services/Favourite_service.dart';
 import '../models/product_model.dart';
 import '../services/get_all_products_service.dart';
 import '../widgets/custom_search.dart';
@@ -200,7 +201,8 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, ServicesPage.id);
+                          Navigator.pushReplacementNamed(
+                              context, ServicesPage.id);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: kBackgroundColor,
@@ -238,7 +240,8 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, AccessoriesPage.id);
+                          Navigator.pushReplacementNamed(
+                              context, AccessoriesPage.id);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: kBackgroundColor,
@@ -276,7 +279,8 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, OthersPage.id);
+                          Navigator.pushReplacementNamed(
+                              context, OthersPage.id);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: kBackgroundColor,
@@ -400,9 +404,53 @@ class _HomePageState extends State<HomePage> {
                                                         TextOverflow.ellipsis),
                                               ),
                                             ),
-                                            const Icon(
-                                              Icons.favorite_border,
-                                              color: Colors.red,
+                                            FutureBuilder<List<Items>>(
+                                              future: getFavourites(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasData) {
+                                                  final favoriteItems =
+                                                      snapshot.data!;
+                                                  final isFavorite =
+                                                      favoriteItems.any(
+                                                          (favoriteItem) =>
+                                                              favoriteItem
+                                                                  .sId ==
+                                                              item.sId);
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      if (isFavorite) {
+                                                        // Remove item from favorites
+                                                        updateFavoriteItem(
+                                                            item.sId!);
+                                                      } else {
+                                                        // Add item to favorites
+                                                        updateFavoriteItem(
+                                                            item.sId!);
+                                                      }
+                                                    },
+                                                    child: isFavorite
+                                                        ? const Icon(
+                                                            Icons.favorite,
+                                                            color: Colors.red,
+                                                          )
+                                                        : const Icon(
+                                                            Icons
+                                                                .favorite_border,
+                                                            color: Colors.red,
+                                                          ),
+                                                  );
+                                                } else if (snapshot.hasError) {
+                                                  return const Icon(
+                                                    Icons.favorite_border,
+                                                    color: Colors.red,
+                                                  );
+                                                } else {
+                                                  return const Icon(
+                                                    Icons.favorite_border,
+                                                    color: Colors.red,
+                                                  );
+                                                }
+                                              },
                                             ),
                                           ],
                                         ),
