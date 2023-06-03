@@ -3,14 +3,15 @@ import 'package:project_v2/helper/constants.dart';
 import 'package:project_v2/pages/Account_page.dart';
 import 'package:project_v2/pages/accessories_page.dart';
 import 'package:project_v2/pages/elctronics_page.dart';
+import 'package:project_v2/pages/navigator_home_page.dart';
 import '../models/product_model.dart';
+import '../services/Favourite_service.dart';
 import '../services/get_all_products_service.dart';
 import '../widgets/custom_search.dart';
 import 'books_page.dart';
 import 'other_page.dart';
 import 'product_details_page.dart';
 import 'package:intl/intl.dart';
-
 import 'tools_page.dart';
 
 class ServicesPage extends StatefulWidget {
@@ -199,7 +200,7 @@ class _ServicesPage extends State<ServicesPage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pushReplacementNamed(context, NavigatorHome.id);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: kPrimaryColor,
@@ -373,7 +374,6 @@ class _ServicesPage extends State<ServicesPage> {
                                 ],
                               ),
                               child: Card(
-                                color: kBackgroundColor,
                                 elevation: 16,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
@@ -400,9 +400,53 @@ class _ServicesPage extends State<ServicesPage> {
                                                         TextOverflow.ellipsis),
                                               ),
                                             ),
-                                            const Icon(
-                                              Icons.favorite_border,
-                                              color: Colors.red,
+                                            FutureBuilder<List<Items>>(
+                                              future: getFavourites(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasData) {
+                                                  final favoriteItems =
+                                                      snapshot.data!;
+                                                  final isFavorite =
+                                                      favoriteItems.any(
+                                                          (favoriteItem) =>
+                                                              favoriteItem
+                                                                  .sId ==
+                                                              item.sId);
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      if (isFavorite) {
+                                                        // Remove item from favorites
+                                                        updateFavoriteItem(
+                                                            item.sId!);
+                                                      } else {
+                                                        // Add item to favorites
+                                                        updateFavoriteItem(
+                                                            item.sId!);
+                                                      }
+                                                    },
+                                                    child: isFavorite
+                                                        ? const Icon(
+                                                            Icons.favorite,
+                                                            color: Colors.red,
+                                                          )
+                                                        : const Icon(
+                                                            Icons
+                                                                .favorite_border,
+                                                            color: Colors.red,
+                                                          ),
+                                                  );
+                                                } else if (snapshot.hasError) {
+                                                  return const Icon(
+                                                    Icons.favorite_border,
+                                                    color: Colors.red,
+                                                  );
+                                                } else {
+                                                  return const Icon(
+                                                    Icons.favorite_border,
+                                                    color: Colors.red,
+                                                  );
+                                                }
+                                              },
                                             ),
                                           ],
                                         ),

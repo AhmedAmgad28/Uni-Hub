@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(
+                          Navigator.pushNamed(
                               context, ServicesPage.id);
                         },
                         style: ElevatedButton.styleFrom(
@@ -240,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(
+                          Navigator.pushNamed(
                               context, AccessoriesPage.id);
                         },
                         style: ElevatedButton.styleFrom(
@@ -279,7 +279,7 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(
+                          Navigator.pushNamed(
                               context, OthersPage.id);
                         },
                         style: ElevatedButton.styleFrom(

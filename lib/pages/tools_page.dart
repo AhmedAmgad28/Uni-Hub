@@ -4,6 +4,7 @@ import 'package:project_v2/pages/Account_page.dart';
 import 'package:project_v2/pages/books_page.dart';
 import 'package:project_v2/pages/services_page.dart';
 import '../models/product_model.dart';
+import '../services/Favourite_service.dart';
 import '../services/get_all_products_service.dart';
 import '../widgets/custom_search.dart';
 import 'accessories_page.dart';
@@ -372,7 +373,6 @@ class _ToolsPage extends State<ToolsPage> {
                                 ],
                               ),
                               child: Card(
-                                color: kBackgroundColor,
                                 elevation: 16,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
@@ -399,9 +399,53 @@ class _ToolsPage extends State<ToolsPage> {
                                                         TextOverflow.ellipsis),
                                               ),
                                             ),
-                                            const Icon(
-                                              Icons.favorite_border,
-                                              color: Colors.red,
+                                            FutureBuilder<List<Items>>(
+                                              future: getFavourites(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasData) {
+                                                  final favoriteItems =
+                                                      snapshot.data!;
+                                                  final isFavorite =
+                                                      favoriteItems.any(
+                                                          (favoriteItem) =>
+                                                              favoriteItem
+                                                                  .sId ==
+                                                              item.sId);
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      if (isFavorite) {
+                                                        // Remove item from favorites
+                                                        updateFavoriteItem(
+                                                            item.sId!);
+                                                      } else {
+                                                        // Add item to favorites
+                                                        updateFavoriteItem(
+                                                            item.sId!);
+                                                      }
+                                                    },
+                                                    child: isFavorite
+                                                        ? const Icon(
+                                                            Icons.favorite,
+                                                            color: Colors.red,
+                                                          )
+                                                        : const Icon(
+                                                            Icons
+                                                                .favorite_border,
+                                                            color: Colors.red,
+                                                          ),
+                                                  );
+                                                } else if (snapshot.hasError) {
+                                                  return const Icon(
+                                                    Icons.favorite_border,
+                                                    color: Colors.red,
+                                                  );
+                                                } else {
+                                                  return const Icon(
+                                                    Icons.favorite_border,
+                                                    color: Colors.red,
+                                                  );
+                                                }
+                                              },
                                             ),
                                           ],
                                         ),
