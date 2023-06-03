@@ -4,7 +4,6 @@ import 'package:project_v2/helper/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/add_product.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'navigator_home_page.dart';
 
 class SellProductPage extends StatefulWidget {
@@ -14,6 +13,13 @@ class SellProductPage extends StatefulWidget {
 
   @override
   State<SellProductPage> createState() => _SellProductPageState();
+}
+
+class Category {
+  final String value;
+  final String label;
+
+  const Category({required this.value, required this.label});
 }
 
 class _SellProductPageState extends State<SellProductPage> {
@@ -28,6 +34,13 @@ class _SellProductPageState extends State<SellProductPage> {
   final _addressController = TextEditingController();
   final _locationDescriptionController = TextEditingController();
   final List<File> _selectedImages = [];
+
+  final List<Category> _categories = [
+    const Category(value: 'Books', label: 'Books'),
+    const Category(value: 'Tools', label: 'Tools'),
+    const Category(value: 'Services', label: 'Services'),
+    const Category(value: 'Other', label: 'Other'),
+  ];
 
   Future<void> _getImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
@@ -93,10 +106,11 @@ class _SellProductPageState extends State<SellProductPage> {
         }
         // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(
-    context,
-    NavigatorHome.id, // replace '/home' with the name of your home page route
-    (route) => false,
-  );
+          context,
+          NavigatorHome
+              .id, // replace '/home' with the name of your home page route
+          (route) => false,
+        );
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
@@ -212,54 +226,83 @@ class _SellProductPageState extends State<SellProductPage> {
                 },
               ),
               const SizedBox(height: 16.0),
-                const Text(
-                  'Cover Image',
-                  style: TextStyle(fontSize: 18.0),
+              DropdownButtonFormField<String>(
+                value: _categoryController.text.isNotEmpty
+                    ? _categoryController.text
+                    : null,
+                decoration: const InputDecoration(
+                  labelText: 'Category',
+                  border: OutlineInputBorder(),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    // Allow the user to select an image from either the camera or the gallery
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return SafeArea(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: const Icon(Icons.camera_alt),
-                                title: const Text('Take Photo'),
-                                onTap: () {
-                                  _getImage(ImageSource.camera);
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              ListTile(
-                                leading: const Icon(Icons.photo_library),
-                                title: const Text('Choose from Gallery'),
-                                onTap: () {
-                                  _getImage(ImageSource.gallery);
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: Container(
-                    height: 150.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: _selectedImages.isEmpty
-                        ? const Icon(Icons.add_a_photo, size: 64.0)
-                        : Image.file(_selectedImages.first),
+                items: _categories.map((category) {
+                  return DropdownMenuItem<String>(
+                    key: Key(category
+                        .value), // assign a unique key based on the category value
+                    value: category.value,
+                    child: Text(category.label),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _categoryController.text = value!;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select a category';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16.0),
+              const Text(
+                'Cover Image',
+                style: TextStyle(fontSize: 18.0),
+              ),
+              GestureDetector(
+                onTap: () {
+                  // Allow the user to select an image from either the camera or the gallery
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return SafeArea(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: const Icon(Icons.camera_alt),
+                              title: const Text('Take Photo'),
+                              onTap: () {
+                                _getImage(ImageSource.camera);
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.photo_library),
+                              title: const Text('Choose from Gallery'),
+                              onTap: () {
+                                _getImage(ImageSource.gallery);
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  height: 150.0,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(12.0),
                   ),
+                  child: _selectedImages.isEmpty
+                      ? const Icon(Icons.add_a_photo, size: 64.0)
+                      : Image.file(_selectedImages.first),
                 ),
+              ),
               const SizedBox(height: 16.0),
               const Text('Product Images', style: TextStyle(fontSize: 18)),
               const SizedBox(height: 8.0),
@@ -299,30 +342,12 @@ class _SellProductPageState extends State<SellProductPage> {
                   ),
                 ),
               const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _categoryController,
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  labelText: 'Category',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _cityController,
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  labelText: 'City',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Location',
-                    style: TextStyle(fontSize: 18,color: Colors.black),
+                    style: TextStyle(fontSize: 18, color: Colors.black),
                   ),
                   const SizedBox(height: 8.0),
                   Row(
@@ -341,7 +366,7 @@ class _SellProductPageState extends State<SellProductPage> {
                       const SizedBox(width: 8.0),
                       const Text(
                         'Latitude:',
-                        style: TextStyle(fontSize: 16,color: Colors.black),
+                        style: TextStyle(fontSize: 16, color: Colors.black),
                       ),
                       const SizedBox(width: 8.0),
                       Expanded(
@@ -392,6 +417,15 @@ class _SellProductPageState extends State<SellProductPage> {
                     ],
                   ),
                 ],
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _cityController,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  labelText: 'City',
+                  border: OutlineInputBorder(),
+                ),
               ),
               const SizedBox(height: 16.0),
               TextFormField(
