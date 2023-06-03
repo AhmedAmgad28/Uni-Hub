@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:project_v2/helper/constants.dart';
 import 'package:project_v2/pages/Account_page.dart';
-import 'package:project_v2/pages/books_page.dart';
-import 'package:project_v2/pages/elctronics_page.dart';
 import '../models/product_model.dart';
 import '../services/get_all_products_service.dart';
 import '../widgets/custom_search.dart';
 import 'accessories_page.dart';
+import 'books_page.dart';
 import 'other_page.dart';
 import 'product_details_page.dart';
 import 'package:intl/intl.dart';
@@ -14,15 +13,15 @@ import 'package:intl/intl.dart';
 import 'services_page.dart';
 import 'tools_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-  static String id = 'HomePage';
+class ElectronicsPage extends StatefulWidget {
+  const ElectronicsPage({super.key});
+  static String id = 'ElectronicsPage';
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ElectronicsPage> createState() => _ElectronicsPage();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ElectronicsPage extends State<ElectronicsPage> {
   String reverseDateFormat(String dateString) {
     final parsedDate = DateTime.parse(dateString);
     final formatter = DateFormat('dd-MM-yyyy');
@@ -35,14 +34,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _futureItemsModel = getAllServices();
+    _futureItemsModel = getitemsByCategory('Electronics');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         elevation: 10,
         backgroundColor: kPrimaryColor,
         actions: [
@@ -69,7 +68,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 0.7, left: 1, right: 1),
+            padding: const EdgeInsets.only(top: 0.7,left: 1,right: 1),
             child: SearchTextField(hintText: 'Search for products'),
           ),
           Padding(
@@ -86,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, BooksPage.id);
+                          Navigator.pushReplacementNamed(context, BooksPage.id);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: kBackgroundColor,
@@ -124,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, ToolsPage.id);
+                          Navigator.pushReplacementNamed(context, ToolsPage.id);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: kBackgroundColor,
@@ -162,10 +161,10 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, ElectronicsPage.id);
+                          Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: kBackgroundColor,
+                          backgroundColor: kPrimaryColor,
                           padding: EdgeInsets.zero,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -176,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                           children: const [
                             Icon(
                               Icons.electrical_services_rounded,
-                              color: kPrimaryColor,
+                              color: kBackgroundColor,
                             ),
                             SizedBox(
                               height: 8,
@@ -186,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
-                                  color: kPrimaryColor),
+                                  color: kBackgroundColor),
                             ),
                           ],
                         ),
@@ -374,6 +373,7 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               child: Card(
+                                color: kBackgroundColor,
                                 elevation: 16,
                                 child: Padding(
                                   padding: const EdgeInsets.only(

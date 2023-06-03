@@ -12,3 +12,14 @@ Future<itemsModel> getAllServices() async {
     throw Exception('Failed to fetch data');
   }
 }
+
+Future<itemsModel> getitemsByCategory(String category) async {
+  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/items?category=$category');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    return itemsModel.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to fetch data');
+  }
+}

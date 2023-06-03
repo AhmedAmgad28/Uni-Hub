@@ -38,7 +38,9 @@ class _SellProductPageState extends State<SellProductPage> {
   final List<Category> _categories = [
     const Category(value: 'Books', label: 'Books'),
     const Category(value: 'Tools', label: 'Tools'),
+    const Category(value: 'Electronics', label: 'Electronics'),
     const Category(value: 'Services', label: 'Services'),
+    const Category(value: 'Accessories', label: 'Accessories'),
     const Category(value: 'Other', label: 'Other'),
   ];
 

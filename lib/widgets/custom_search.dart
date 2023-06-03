@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
-
 import '../helper/constants.dart';
 
 class SearchTextField extends StatelessWidget {
@@ -24,9 +22,11 @@ class SearchTextField extends StatelessWidget {
         return null;
       },
       onChanged: onChanged,
-      style: const TextStyle(color: Colors.black),
+      style: const TextStyle(color: kPrimaryColor,fontSize: 14),
+      cursorColor: kPrimaryColor,
       decoration: InputDecoration(
-        suffixIcon: GestureDetector(
+        fillColor: kBackgroundColor,
+        prefixIcon: GestureDetector(
           onTap: (){
 
           },
@@ -36,22 +36,13 @@ class SearchTextField extends StatelessWidget {
         contentPadding:
             const EdgeInsets.symmetric(vertical: 18, horizontal: 18),
         focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(4),
-          ),
           borderSide: BorderSide(color: kPrimaryColor,width: 2),
         ),
         enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(4),
-          ),
-          borderSide: BorderSide(color: Colors.grey,width: 1),
+          borderSide: BorderSide(color: Colors.grey,width: 0),
         ),
         border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(4),
-          ),
-          borderSide: BorderSide(color: Colors.grey,width: 1),
+          borderSide: BorderSide(color: Colors.grey,width: 0),
         ),
       ),
     );
