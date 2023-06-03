@@ -49,6 +49,7 @@ class ForgetPasswordScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Image.asset("assets/images/Forgot_password-cuate.png",height: 300,),
             TextField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,

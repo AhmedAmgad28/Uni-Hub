@@ -140,6 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
           key: _formKey,
           child: ListView(
             children: [
+              Image.asset("assets/images/Mobile_login-pana.png",height: 300,),
               const Text(
                 'Please Fill the following Fields: ',
                 style: TextStyle(fontSize: 24, color: Colors.black),

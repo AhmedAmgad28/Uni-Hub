@@ -90,6 +90,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Image.asset("assets/images/Reset_password-bro.png",height: 300,),
               TextFormField(
                 controller: _currentPasswordController,
                 decoration: const InputDecoration(

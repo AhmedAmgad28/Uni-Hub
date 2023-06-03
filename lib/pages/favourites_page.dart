@@ -3,7 +3,6 @@ import 'package:project_v2/helper/constants.dart';
 import 'package:project_v2/pages/Account_page.dart';
 import '../models/product_model.dart';
 import '../services/Favourite_service.dart';
-import '../services/get_all_products_service.dart';
 import 'product_details_page.dart';
 import 'package:intl/intl.dart';
 

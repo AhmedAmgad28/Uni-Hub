@@ -39,16 +39,19 @@ class LoginPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         children: [
           const SizedBox(
-            height: 32,
+            height: 6,
           ),
-          const Text(
-            'Welcome back!',
-            style: TextStyle(
-              color: kPrimaryColor,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+          const Center(
+            child: Text(
+              'Welcome back!',
+              style: TextStyle(
+                color: kPrimaryColor,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
+          Image.asset("assets/images/Computer_login-bro.png",height: 300,),
           const SizedBox(
             height: 32,
           ),
