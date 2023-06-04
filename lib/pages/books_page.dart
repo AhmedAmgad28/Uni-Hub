@@ -68,8 +68,8 @@ class _BooksPage extends State<BooksPage> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 0.7, left: 1, right: 1),
+           const Padding(
+            padding: EdgeInsets.only(top: 0.7, left: 1, right: 1),
             child: SearchTextField(hintText: 'Search for products'),
           ),
           Padding(

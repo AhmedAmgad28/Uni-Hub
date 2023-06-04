@@ -92,7 +92,7 @@ class _GuestPageState extends State<GuestPage> {
       ),
       body: Column(
         children: [
-          SearchTextField(hintText: 'Search for products'),
+          const SearchTextField(hintText: 'Search for products'),
           const SizedBox(
             height: 8,
           ),

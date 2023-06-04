@@ -7,6 +7,7 @@ import '../services/delete_user.dart';
 import '../services/get_user_info.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'change_password_page.dart';
+import 'navigator_home_page.dart';
 
 class AccountPage extends StatefulWidget {
   // ignore: use_key_in_widget_constructors
@@ -45,6 +46,13 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            // Handle the back button press here
+            Navigator.popAndPushNamed(context, NavigatorHome.id);
+          },
+        ),
         elevation: 10,
         centerTitle: true,
         backgroundColor: kPrimaryColor,
@@ -168,7 +176,8 @@ class _AccountPageState extends State<AccountPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const ChangePasswordPage(),
+                                builder: (context) =>
+                                    const ChangePasswordPage(),
                               ),
                             );
                           },
@@ -343,14 +352,14 @@ class _AccountPageState extends State<AccountPage> {
                                     TextButton(
                                       child: const Text('Log Out'),
                                       onPressed: () {
-                                          removeToken().then((_) {
-                                            Navigator.of(context)
-                                                .pushNamedAndRemoveUntil(
-                                              GuestPage.id,
-                                              (Route<dynamic> route) => false,
-                                              arguments: {},
-                                            );
-                                          });
+                                        removeToken().then((_) {
+                                          Navigator.of(context)
+                                              .pushNamedAndRemoveUntil(
+                                            GuestPage.id,
+                                            (Route<dynamic> route) => false,
+                                            arguments: {},
+                                          );
+                                        });
                                       },
                                     ),
                                   ],

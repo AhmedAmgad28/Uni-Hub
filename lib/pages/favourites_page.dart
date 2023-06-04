@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_v2/helper/constants.dart';
 import 'package:project_v2/pages/Account_page.dart';
+import 'package:project_v2/pages/navigator_home_page.dart';
 import '../models/product_model.dart';
 import '../services/Favourite_service.dart';
 import 'product_details_page.dart';
@@ -151,10 +152,53 @@ class _FavouritesPageState extends State<FavouritesPage> {
                                                           TextOverflow.ellipsis),
                                                 ),
                                               ),
-                                              const Icon(
-                                                Icons.favorite_outlined,
-                                                color: Colors.red,
-                                              ),
+                                              FutureBuilder<List<Items>>(
+                                              future: getFavourites(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasData) {
+                                                  final favoriteItems =
+                                                      snapshot.data!;
+                                                  final isFavorite =
+                                                      favoriteItems.any(
+                                                          (favoriteItem) =>
+                                                              favoriteItem
+                                                                  .sId ==
+                                                              item.sId);
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      if (isFavorite) {
+                                                        // Remove item from favorites
+                                                        updateFavoriteItem(item.sId!);
+                                                      } else {
+                                                        // Add item to favorites
+                                                        updateFavoriteItem(item.sId!);
+                                                      }
+                                                      Navigator.pushReplacementNamed(context, NavigatorHome.id);
+                                                    },
+                                                    child: isFavorite
+                                                        ? const Icon(
+                                                            Icons.favorite,
+                                                            color: Colors.red,
+                                                          )
+                                                        : const Icon(
+                                                            Icons
+                                                                .favorite_border,
+                                                            color: Colors.red,
+                                                          ),
+                                                  );
+                                                } else if (snapshot.hasError) {
+                                                  return const Icon(
+                                                    Icons.favorite_border,
+                                                    color: Colors.red,
+                                                  );
+                                                } else {
+                                                  return const Icon(
+                                                    Icons.favorite_border,
+                                                    color: Colors.red,
+                                                  );
+                                                }
+                                              },
+                                            ),
                                             ],
                                           ),
                                         ),

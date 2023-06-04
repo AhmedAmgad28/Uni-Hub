@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
     final formattedDate = formatter.format(parsedDate);
     return formattedDate;
   }
-
   late Future<itemsModel> _futureItemsModel;
 
   @override
@@ -69,9 +68,9 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 0.7, left: 1, right: 1),
-            child: SearchTextField(hintText: 'Search for products'),
+          const Padding(
+            padding: EdgeInsets.only(top: 0.7, left: 1, right: 1),
+            child: SearchTextField(hintText: 'Search for products',),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:project_v2/pages/account_page.dart';
 import '../models/product_model.dart';
 import '../services/user_update_profile.dart';
 import 'package:project_v2/helper/constants.dart';
@@ -14,12 +17,21 @@ class UpdateProfilePage extends StatefulWidget {
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _photoController = TextEditingController();
+  File? _imageFile;
+
+  Future<void> _getImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
 
   void _updateProfile() async {
     final name = _nameController.text;
     final phone = _phoneController.text;
-    final photo = _photoController.text;
+    final photo = _imageFile.toString();
 
     try {
       await updateProfile(name, phone, photo);
@@ -29,12 +41,12 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Success'),
-          content: const Text('User data updatedsuccessfully.'),
+          content: const Text('User data updated successfully.'),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context, updatedUser);
                 Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, AccountPage.id);
               },
               child: const Text('OK'),
             ),
@@ -88,37 +100,67 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         appBar: AppBar(
           title: const Text('Update Profile'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Name',
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _phoneController,
-                decoration: const InputDecoration(
-                  labelText: 'Phone',
+                const SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _phoneController,
+                  decoration: const InputDecoration(
+                    labelText: 'Phone',
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _photoController,
-                decoration: const InputDecoration(
-                  labelText: 'Photo',
+                const SizedBox(height: 24.0),
+                const Text('Profile Image', style: TextStyle(fontSize: 16)),
+                const SizedBox(height: 8.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () => _getImage(ImageSource.camera),
+                      icon: const Icon(Icons.camera_alt),
+                      label: const Text('Take Photo'),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: kPrimaryColor),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () => _getImage(ImageSource.gallery),
+                      icon: const Icon(Icons.image),
+                      label: const Text('Choose from Gallery'),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: kPrimaryColor),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 32.0),
-              ElevatedButton(
-                onPressed: _updateProfile,
-                child: const Text('Save Changes'),
-              ),
-            ],
+                const SizedBox(height: 8.0),
+                Container(
+                    height: 150.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child:  _imageFile == null
+                        ? const Icon(Icons.add_a_photo, size: 40.0)
+                        : Image.file(_imageFile!),
+                  ),
+                const SizedBox(height: 32.0),
+                ElevatedButton(
+                  onPressed: _updateProfile,
+                  child: const Text('Save Changes'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

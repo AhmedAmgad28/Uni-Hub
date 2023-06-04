@@ -96,7 +96,22 @@ class _RegisterPageState extends State<RegisterPage> {
         photo: _imageFile != null ? _imageFile!.path : '',
       );
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, LoginPage.id);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Success'),
+          content: const Text('Account Created Successfully.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, LoginPage.id);
+              },
+              child: const Text('LogIn'),
+            ),
+          ],
+        ),
+      );
+      
     } catch (e) {
       showDialog(
         context: context,

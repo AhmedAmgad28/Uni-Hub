@@ -7,6 +7,8 @@ import '../services/single_product_details.dart';
 import 'account_page.dart';
 import 'package:intl/intl.dart';
 
+import 'view_profile_page.dart';
+
 class ProductDetailsPage extends StatefulWidget {
   const ProductDetailsPage({Key? key, required this.itemId}) : super(key: key);
   static String id = 'ProductDetailsPage';
@@ -342,7 +344,19 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       fontSize: 14),
                                 ),
                                 GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ViewProfilePage(
+                                userId: item.user!.sId!,
+                                userName: item.user!.name!,
+                                userPhoto: item.user!.photo!,
+                                joinedAt: item.user!.joinAt!,
+                              ),
+                            ),
+                          );
+                                  },
                                   child: const Text(
                                     'See Profile',
                                     style: TextStyle(

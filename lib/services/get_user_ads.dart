@@ -12,7 +12,7 @@ Future<Map<String, dynamic>> getUserData() async {
     throw Exception('Access token not found');
   }
 
-  const url = 'https://utopiaapi.cyclic.app/api/v1/users/me'; // Replace with your API endpoint
+  const url = 'https://utopiaapi.cyclic.app/api/v1/users/me';
 
   final response = await http.get(
     Uri.parse(url),
