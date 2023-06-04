@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:project_v2/helper/constants.dart';
-import 'package:project_v2/pages/my_ads_page.dart';
 import 'package:project_v2/pages/navigator_home_page.dart';
-
 import '../services/update_item_by_user.dart';
 import 'sell_your_product.dart';
 

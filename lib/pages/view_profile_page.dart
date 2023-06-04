@@ -4,9 +4,6 @@ import 'package:project_v2/helper/constants.dart';
 import '../models/product_model.dart';
 import '../services/Favourite_service.dart';
 import '../services/get_all_products_service.dart';
-import '../services/get_user_info.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'product_details_page.dart';
 
 class ViewProfilePage extends StatefulWidget {
@@ -81,8 +78,7 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                         CircleAvatar(
                           radius: 60,
                           backgroundImage: NetworkImage(
-                            widget.userPhoto != null &&
-                                    Uri.parse(widget.userPhoto).isAbsolute
+                            Uri.parse(widget.userPhoto).isAbsolute
                                 ? widget.userPhoto
                                 : defaultProfileImgUrl,
                           ),

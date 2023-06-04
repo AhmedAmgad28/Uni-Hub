@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_v2/pages/account_page.dart';
-import '../models/product_model.dart';
 import '../services/user_update_profile.dart';
 import 'package:project_v2/helper/constants.dart';
 
@@ -35,7 +34,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
     try {
       await updateProfile(name, phone, photo);
-      final updatedUser = User(name: name, phone: phone, photo: photo);
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
