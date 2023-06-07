@@ -1,63 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:project_v2/helper/constants.dart';
 
 class ChatBubble extends StatelessWidget {
+  final String message;
+  final String date;
+  final bool isMe;
+
   const ChatBubble({
-    super.key,
-    //required this.message
-  });
-  //final Message message;
+    Key? key,
+    required this.message,
+    required this.date,
+    required this.isMe,
+  }) : super(key: key);
+
+  
+  String reverseDateFormat(String dateString) {
+    final parsedDate = DateTime.parse(dateString);
+    final formatter = DateFormat('hh:mm a');
+    final formattedDate = formatter.format(parsedDate);
+    return formattedDate;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: const BoxDecoration(
-            color: Colors.blueGrey,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(32),
-              topRight: Radius.circular(32),
-              bottomLeft: Radius.circular(32),
-            )),
-        child: const Text(
-          'Message user1',
-          //message.message,
-          style: TextStyle(
-            color: Colors.white,
+        decoration: BoxDecoration(
+          color: isMe ? kPrimaryColor : const Color.fromARGB(255, 133, 84, 203),
+          borderRadius: BorderRadius.only(
+            topLeft:
+                isMe ? const Radius.circular(15) : const Radius.circular(0),
+            topRight:
+                isMe ? const Radius.circular(0) : const Radius.circular(15),
+            bottomLeft: const Radius.circular(15),
+            bottomRight: const Radius.circular(15),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ChatBubbleForFriend extends StatelessWidget {
-  const ChatBubbleForFriend({
-    super.key,
-    //required this.message
-  });
-  //final Message message;
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: const BoxDecoration(
-            color: Color(0xff006D84),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(32),
-              topRight: Radius.circular(32),
-              bottomRight: Radius.circular(32),
-            )),
-        child: const Text(
-          'Message user2',
-          //message.message,
-          style: TextStyle(
-            color: Colors.white,
-          ),
+        child: Column(
+          children: [
+            Text(
+              message,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              reverseDateFormat(date),
+              style: const TextStyle(
+                color: Color.fromARGB(255, 207, 207, 207),
+              ),
+              textAlign: TextAlign.right,
+              
+            ),
+          ],
         ),
       ),
     );

@@ -7,8 +7,9 @@ import 'package:project_v2/pages/my_ads_page.dart';
 import 'package:project_v2/pages/sell_your_product.dart';
 
 class NavigatorHome extends StatefulWidget {
-  const NavigatorHome({super.key});
+  const NavigatorHome({super.key, required this.userId});
   static String id = 'NavigatorHome';
+  final String userId;
 
   @override
   State<NavigatorHome> createState() => _HomePageState();
@@ -16,17 +17,30 @@ class NavigatorHome extends StatefulWidget {
 
 class _HomePageState extends State<NavigatorHome> {
   int myIndex = 0;
-  List<Widget> widgetList = [
+  String? userId;
+  List<Widget> widgetList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    final userId = widget.userId;
+    // ignore: unused_local_variable
+    widgetList = [
     const HomePage(),
     const MyAdsPage(),
     const SellProductPage(),
     const FavouritesPage(),
-    const ChatsPage(),
+    ChatsPage(userId :userId),
   ];
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: myIndex,children: widgetList,),
+      body: IndexedStack(
+        index: myIndex,
+        children: widgetList,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {

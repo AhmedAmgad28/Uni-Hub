@@ -51,7 +51,10 @@ class LoginPage extends StatelessWidget {
               ),
             ),
           ),
-          Image.asset("assets/images/Computer_login-bro.png",height: 300,),
+          Image.asset(
+            "assets/images/Computer_login-bro.png",
+            height: 300,
+          ),
           const SizedBox(
             height: 32,
           ),
@@ -77,11 +80,11 @@ class LoginPage extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ForgetPasswordScreen(),
-                              ),
-                            );
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ForgetPasswordScreen(),
+                    ),
+                  );
                 },
                 child: const Text(
                   'Forgot Password?',
@@ -111,8 +114,14 @@ class LoginPage extends StatelessWidget {
                 final response =
                     await login(email: email!, password: password!);
                 if (response['status'] == "Success") {
+                  final userId = response['data']['account']['_id'];
                   // ignore: use_build_context_synchronously
-                  Navigator.pushReplacementNamed(context, NavigatorHome.id);
+                  Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(
+    builder: (context) => NavigatorHome(userId: userId),
+  ),
+);
                 } else {
                   // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context).showSnackBar(

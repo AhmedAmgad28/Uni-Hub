@@ -17,6 +17,7 @@ import 'pages/account_page.dart';
 import 'pages/home_page.dart';
 import 'pages/services_page.dart';
 import 'pages/tools_page.dart';
+import 'pages/view_profile_page.dart';
 
 class PostHttpOverrides extends HttpOverrides {
   @override
@@ -53,7 +54,7 @@ class UniHub extends StatelessWidget {
             const RegisterPage(), //after submiting your info, you will be navigated to NavigateHome page
         LoginPage.id: (context) =>
             LoginPage(), //after submiting your info, you will be navigated to NavigateHome page
-        NavigatorHome.id: (context) => const NavigatorHome(), //have botton menu
+        NavigatorHome.id: (context) =>  const NavigatorHome( userId: ''), //have botton menu
         HomePage.id: (context) => const HomePage(),
         BooksPage.id: (context) => const BooksPage(),
         ToolsPage.id: (context) => const ToolsPage(),
@@ -63,9 +64,10 @@ class UniHub extends StatelessWidget {
         OthersPage.id: (context) => const OthersPage(),
         FavouritesPage.id: (context) => const FavouritesPage(),
         MyAdsPage.id: (context) => const MyAdsPage(),
-        ChatsPage.id: (context) => const ChatsPage(),
+        ChatsPage.id: (context) => const ChatsPage(userId: ''),
         SellProductPage.id: (context) => const SellProductPage(),
         AccountPage.id: (context) => const AccountPage(),
+        ViewProfilePage.id: (context) => const ViewProfilePage(joinedAt: '', userId: '', userName: '', userPhoto: '',),
         //ProductDetailsPage.id: (context) => const ProductDetailsPage(),
       },
     );
