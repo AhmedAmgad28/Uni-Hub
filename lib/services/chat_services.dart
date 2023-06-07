@@ -85,8 +85,6 @@ Future<Map<String, dynamic>> createChatRoom(String receiverUserId) async {
   final body = jsonEncode({'receiver': receiverUserId});
   final response = await http.post(url, headers: headers, body: body);
 
-  print(body);
-  print(response.statusCode);
   if (response.statusCode == 201 || response.statusCode == 200) {
     final responseData = jsonDecode(response.body);
     final chatRoom = responseData['chatRoom'];
