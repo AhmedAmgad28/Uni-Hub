@@ -14,14 +14,12 @@ class ChatBubble extends StatelessWidget {
     required this.isMe,
   }) : super(key: key);
 
-  
   String reverseDateFormat(String dateString) {
     final parsedDate = DateTime.parse(dateString);
     final formatter = DateFormat('hh:mm a');
     final formattedDate = formatter.format(parsedDate);
     return formattedDate;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +40,8 @@ class ChatBubble extends StatelessWidget {
           ),
         ),
         child: Column(
+          crossAxisAlignment:
+              isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             Text(
               message,
@@ -49,13 +49,13 @@ class ChatBubble extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
+            const SizedBox(height: 5),
             Text(
               reverseDateFormat(date),
               style: const TextStyle(
                 color: Color.fromARGB(255, 207, 207, 207),
+                fontSize: 12,
               ),
-              textAlign: TextAlign.right,
-              
             ),
           ],
         ),

@@ -56,6 +56,7 @@ Future<Items> getItemById(String itemId) async {
       description: jsonResponse['description'],
       coverImg: jsonResponse['coverImg'],
       category: jsonResponse['category'],
+      condition:jsonResponse['condition'],
       city: jsonResponse['city'],
       createAt: jsonResponse['createAt'],
       user: User.fromJson(jsonResponse['user']),
@@ -75,6 +76,7 @@ Future<http.Response> addProduct({
   required String coverImgPath,
   required List<File> imgs,
   required String category,
+  required String condition,
   required String city,
   required double lat,
   required double lng,
@@ -98,6 +100,7 @@ Future<http.Response> addProduct({
     'coverImg': coverImg,
     'imgs': imgNames,
     'category': category,
+    'condition': condition,
     'city': city,
     'location': {
       'type': 'point',

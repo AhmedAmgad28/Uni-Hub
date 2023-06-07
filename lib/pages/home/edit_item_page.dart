@@ -24,6 +24,7 @@ class _EditItemPageState extends State<EditItemPage> {
   int? _updatedPrice;
   String? _updatedDescription;
   String? _updatedCategory;
+  String? _updatedCondition;
   String? _updatedCity;
 
   final List<Category> _categories = [
@@ -33,6 +34,12 @@ class _EditItemPageState extends State<EditItemPage> {
     const Category(value: 'Services', label: 'Services'),
     const Category(value: 'Accessories', label: 'Accessories'),
     const Category(value: 'Other', label: 'Other'),
+  ];
+
+  final List<Condition> _condition = [
+    const Condition(value: 'New', label: 'New'),
+    const Condition(value: 'Used', label: 'Used'),
+    const Condition(value: 'Other', label: 'Other'),
   ];
 
   @override
@@ -125,6 +132,34 @@ class _EditItemPageState extends State<EditItemPage> {
                     return null;
                   },
                 ),
+                const SizedBox(
+                  height: 12,
+                ),
+                DropdownButtonFormField<String>(
+                  value: widget.item['condition'], // set the initial value
+                  decoration: const InputDecoration(
+                    labelText: 'Condition',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: _condition.map((condition) {
+                    return DropdownMenuItem<String>(
+                      key: Key(condition.value),
+                      value: condition.value,
+                      child: Text(condition.label),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _updatedCondition = value!;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select a condition';
+                    }
+                    return null;
+                  },
+                ),
                 TextFormField(
                   initialValue: widget.item['city'],
                   decoration: const InputDecoration(
@@ -157,11 +192,17 @@ class _EditItemPageState extends State<EditItemPage> {
                               content: Text('Please select a category')));
                           return;
                         }
+                        if (_updatedCondition == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              content: Text('Please select a condition')));
+                          return;
+                        }
                         final updatedValues = {
                           'title': _updatedTitle,
                           'price': _updatedPrice,
                           'description': _updatedDescription,
                           'category': _updatedCategory,
+                          'condition': _updatedCondition,
                           'city': _updatedCity,
                         };
                         updateItem(widget.item, updatedValues);

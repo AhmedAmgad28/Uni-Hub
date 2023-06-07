@@ -90,7 +90,7 @@ Future<Map<String, dynamic>> createChatRoom(String receiverUserId) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
   };
-  final body = jsonEncode({'receiver': receiverUserId});
+  final body = jsonEncode({'reciever': receiverUserId});
   final response = await http.post(url, headers: headers, body: body);
 
   if (response.statusCode == 201 || response.statusCode == 200) {

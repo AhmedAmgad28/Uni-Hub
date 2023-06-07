@@ -59,6 +59,7 @@ class Items {
   String? coverImg;
   List<String>? imgs;
   String? category;
+  String? condition;
   String? city;
   bool? closed;
   User? user;
@@ -73,6 +74,7 @@ class Items {
       this.coverImg,
       this.imgs,
       this.category,
+      this.condition,
       this.city,
       this.closed,
       this.user,
@@ -89,6 +91,7 @@ class Items {
     coverImg = json['coverImg'];
     imgs = json['imgs'] == null ? [] : json['imgs'].cast<String>();
     category = json['category'];
+    condition = json['condition'];
     city = json['city'];
     closed = json['closed'];
     user = json['user'] != null ? User.fromJson(json['user']) : null;
@@ -107,6 +110,7 @@ class Items {
     data['coverImg'] = coverImg;
     data['imgs'] = imgs;
     data['category'] = category;
+    data['condition'] = condition;
     data['city'] = city;
     data['closed'] = closed;
     if (user != null) {

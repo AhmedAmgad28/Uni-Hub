@@ -6,7 +6,6 @@ import '../../services/Favourite_service.dart';
 import '../../services/item_services.dart';
 import '../account/account_page.dart';
 import 'package:intl/intl.dart';
-
 import 'view_profile_page.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -240,35 +239,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                'Department',
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.black54),
-                              ),
-                              Text(
-                                "Computer Science",
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.black54),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            indent: 5,
-                            endIndent: 5,
-                            thickness: 2,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
+                            children:  [
+                              const Text(
                                 'Condition',
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.black54),
                               ),
                               Text(
-                                "Used",
-                                style: TextStyle(
+                                item.condition ?? 'Used',
+                                style: const TextStyle(
                                     fontSize: 18, color: Colors.black54),
                               ),
                             ],
@@ -308,6 +287,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     const Divider(
                       thickness: 1,
                     ),
+                    
                     const Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 4, horizontal: 16),

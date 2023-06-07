@@ -22,12 +22,20 @@ class Category {
   const Category({required this.value, required this.label});
 }
 
+class Condition {
+  final String value;
+  final String label;
+
+  const Condition({required this.value, required this.label});
+}
+
 class _SellProductPageState extends State<SellProductPage> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _categoryController = TextEditingController();
+  final _conditionController = TextEditingController();
   final _cityController = TextEditingController();
   final _latController = TextEditingController();
   final _lngController = TextEditingController();
@@ -42,6 +50,12 @@ class _SellProductPageState extends State<SellProductPage> {
     const Category(value: 'Services', label: 'Services'),
     const Category(value: 'Accessories', label: 'Accessories'),
     const Category(value: 'Other', label: 'Other'),
+  ];
+
+  final List<Condition> _condition = [
+    const Condition(value: 'New', label: 'New'),
+    const Condition(value: 'Used', label: 'Used'),
+    const Condition(value: 'Other', label: 'Other'),
   ];
 
   Future<void> _getImage(ImageSource source) async {
@@ -91,6 +105,7 @@ class _SellProductPageState extends State<SellProductPage> {
         coverImgPath: _selectedImages.first.toString(),
         imgs: _selectedImages,
         category: _categoryController.text,
+        condition: _conditionController.text,
         city: _cityController.text,
         lat: double.parse(_latController.text),
         lng: double.parse(_lngController.text),
@@ -247,6 +262,35 @@ class _SellProductPageState extends State<SellProductPage> {
                 onChanged: (value) {
                   setState(() {
                     _categoryController.text = value!;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select a category';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16.0),
+              DropdownButtonFormField<String>(
+                value: _conditionController.text.isNotEmpty
+                    ? _conditionController.text
+                    : null,
+                decoration: const InputDecoration(
+                  labelText: 'Condition',
+                  border: OutlineInputBorder(),
+                ),
+                items: _condition.map((condition) {
+                  return DropdownMenuItem<String>(
+                    key: Key(condition
+                        .value), // assign a unique key based on the category value
+                    value: condition.value,
+                    child: Text(condition.label),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _conditionController.text = value!;
                   });
                 },
                 validator: (value) {
