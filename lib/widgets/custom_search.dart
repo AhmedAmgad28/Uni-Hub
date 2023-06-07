@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_v2/models/product_model.dart';
 import '../helper/constants.dart';
-import '../pages/product_details_page.dart';
-import '../services/get_all_products_service.dart';
+import '../pages/home/product_details_page.dart';
+import '../services/item_services.dart';
 
 class SearchTextField extends StatefulWidget {
   const SearchTextField({

@@ -7,10 +7,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // ignore: prefer_const_constructors
 final storage = FlutterSecureStorage();
 
+//get all items in favourite list
 Future<List<Items>> getFavourites() async {
   final token = await storage.read(key: 'token');
   if (token == null) {
-    // Handle token not found error
     throw Exception('Access token not found');
   }
 
@@ -27,10 +27,13 @@ Future<List<Items>> getFavourites() async {
   }
 }
 
+
+
+
+//update favourite list
 Future<void> updateFavoriteItem(String itemId) async {
   final token = await storage.read(key: 'token');
   if (token == null) {
-    // Handle token not found error
     throw Exception('Access token not found');
   }
   

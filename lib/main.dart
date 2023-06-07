@@ -1,23 +1,23 @@
 import 'dart:io';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
-import 'package:project_v2/pages/guest_page.dart';
-import 'package:project_v2/pages/login_page.dart';
-import 'package:project_v2/pages/navigator_home_page.dart';
-import 'package:project_v2/pages/register_page.dart';
-import 'pages/accessories_page.dart';
-import 'pages/books_page.dart';
-import 'pages/chats_page.dart';
-import 'pages/elctronics_page.dart';
-import 'pages/favourites_page.dart';
-import 'pages/my_ads_page.dart';
-import 'pages/other_page.dart';
-import 'pages/sell_your_product.dart';
-import 'pages/account_page.dart';
-import 'pages/home_page.dart';
-import 'pages/services_page.dart';
-import 'pages/tools_page.dart';
-import 'pages/view_profile_page.dart';
+import 'package:project_v2/pages/guest/guest_page.dart';
+import 'package:project_v2/pages/guest/login_page.dart';
+import 'package:project_v2/pages/home/navigator_home_page.dart';
+import 'package:project_v2/pages/guest/register_page.dart';
+import 'pages/category/accessories_page.dart';
+import 'pages/category/books_page.dart';
+import 'pages/chat/chats_page.dart';
+import 'pages/category/elctronics_page.dart';
+import 'pages/home/favourites_page.dart';
+import 'pages/home/my_ads_page.dart';
+import 'pages/category/other_page.dart';
+import 'pages/home/sell_your_product.dart';
+import 'pages/account/account_page.dart';
+import 'pages/home/home_page.dart';
+import 'pages/category/services_page.dart';
+import 'pages/category/tools_page.dart';
+import 'pages/home/view_profile_page.dart';
 
 class PostHttpOverrides extends HttpOverrides {
   @override

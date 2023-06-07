@@ -4,10 +4,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 const storage = FlutterSecureStorage();
 
+//get all chatrooms related to the user
 Future<Map<String, dynamic>> fetchChatRooms() async {
   final token = await storage.read(key: 'token');
   if (token == null) {
-    // Handle token not found error
     throw Exception('Access token not found');
   }
 
@@ -25,10 +25,12 @@ Future<Map<String, dynamic>> fetchChatRooms() async {
   }
 }
 
+
+
+//get single chat room
 Future<Map<String, dynamic>> singleChatRoom(String chatRoomID) async {
   final token = await storage.read(key: 'token');
   if (token == null) {
-    // Handle token not found error
     throw Exception('Access token not found');
   }
 
@@ -46,11 +48,14 @@ Future<Map<String, dynamic>> singleChatRoom(String chatRoomID) async {
   }
 }
 
+
+
+
+//send message
 Future<Map<String, dynamic>> postMessage(
     String chatRoomId, String messageContent) async {
   final token = await storage.read(key: 'token');
   if (token == null) {
-    // Handle token not found error
     throw Exception('Access token not found');
   }
 
@@ -71,13 +76,16 @@ Future<Map<String, dynamic>> postMessage(
   return mostRecentMessage;
 }
 
+
+
+
+//create a chat room
 Future<Map<String, dynamic>> createChatRoom(String receiverUserId) async {
   final token = await storage.read(key: 'token');
   if (token == null) {
-    // Handle token not found error
     throw Exception('Access token not found');
   }
-  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/chatRooms/');
+  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/chatRooms');
   final headers = {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
@@ -86,13 +94,13 @@ Future<Map<String, dynamic>> createChatRoom(String receiverUserId) async {
   final response = await http.post(url, headers: headers, body: body);
 
   if (response.statusCode == 201 || response.statusCode == 200) {
-    final responseData = jsonDecode(response.body);
-    final chatRoom = responseData['chatRoom'];
-    return {
-      'status': 'Success',
-      'date': responseData['date'],
-      'chatRoom': chatRoom,
-    };
+    final responseData = response.body;
+  final chatRoom = jsonDecode(responseData)['chatRoom'];
+  return {
+    'status': 'Success',
+    'date': jsonDecode(responseData)['date'],
+    'chatRoom': chatRoom,
+  };
   } else {
     throw Exception('Failed to create chat room: ${response.statusCode}');
   }
