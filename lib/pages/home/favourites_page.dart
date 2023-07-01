@@ -216,7 +216,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                                 left: 20,
                                 top: 6,
                                 child: Image.network(
-                                  "https://unihub.azurewebsites.net/imgs/items/item-63fc200199616b2f3df8506b-1687904402238-cover.jpeg",
+                                  "https://unihub.azurewebsites.net/imgs/items/${item.coverImg}",
                                   height: 100,
                                   width: 90,
                                 ),
