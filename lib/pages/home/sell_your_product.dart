@@ -125,7 +125,7 @@ class _SellProductPageState extends State<SellProductPage> {
         Navigator.pushNamedAndRemoveUntil(
           context,
           NavigatorHome
-              .id, // replace '/home' with the name of your home page route
+              .id, 
           (route) => false,
         );
         // ignore: use_build_context_synchronously

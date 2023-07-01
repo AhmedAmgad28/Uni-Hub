@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:project_v2/models/product_model.dart';
 import '../helper/constants.dart';
-import '../pages/home/product_details_page.dart';
+import '../pages/guest/product_guest_page.dart';
 import '../services/item_services.dart';
 
-class SearchTextField extends StatefulWidget {
-  const SearchTextField({
+class GuestSearchTextField extends StatefulWidget {
+  const GuestSearchTextField({
     Key? key,
     required this.hintText,
   }) : super(key: key);
@@ -15,10 +15,10 @@ class SearchTextField extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _SearchTextFieldState createState() => _SearchTextFieldState();
+  _GuestSearchTextFieldState createState() => _GuestSearchTextFieldState();
 }
 
-class _SearchTextFieldState extends State<SearchTextField> {
+class _GuestSearchTextFieldState extends State<GuestSearchTextField> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -121,7 +121,7 @@ class CustomSearchDelegate extends SearchDelegate {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ProductDetailsPage(itemId: result.sId!),
+                            ProductGuestDetailsPage(itemId: result.sId!),
                       ),
                     );
                   },
@@ -163,7 +163,7 @@ class CustomSearchDelegate extends SearchDelegate {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ProductDetailsPage(itemId: result.sId!),
+                            ProductGuestDetailsPage(itemId: result.sId!),
                       ),
                     );
                   },

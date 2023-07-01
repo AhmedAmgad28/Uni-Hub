@@ -4,8 +4,9 @@ import 'package:project_v2/pages/guest/login_page.dart';
 import 'package:project_v2/pages/guest/register_page.dart';
 import '../../models/product_model.dart';
 import '../../services/item_services.dart';
-import '../../widgets/custom_search.dart';
 import 'package:intl/intl.dart';
+import '../../widgets/custom_search_guest.dart';
+import 'product_guest_page.dart';
 
 class GuestPage extends StatefulWidget {
   const GuestPage({super.key});
@@ -92,7 +93,7 @@ class _GuestPageState extends State<GuestPage> {
       ),
       body: Column(
         children: [
-          const SearchTextField(hintText: 'Search for products'),
+          const GuestSearchTextField(hintText: 'Search for products'),
           const SizedBox(
             height: 8,
           ),
@@ -109,9 +110,13 @@ class _GuestPageState extends State<GuestPage> {
                       final item = data.items![index];
                       return GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(
+                          Navigator.push(
                             context,
-                            LoginPage.id
+                            MaterialPageRoute(
+                              builder: (context) => ProductGuestDetailsPage(
+                                itemId: item.sId!,
+                              ),
+                            ),
                           );
                         },
                         child: Stack(
