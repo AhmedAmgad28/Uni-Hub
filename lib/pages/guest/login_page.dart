@@ -133,7 +133,7 @@ class LoginPage extends StatelessWidget {
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Login failed. Please try again. $e'),
+                    content: Text('$e'),
                   ),
                 );
               }

@@ -9,7 +9,7 @@ final storage = FlutterSecureStorage();
 //login function
 Future<Map<String, dynamic>> login(
     {required String email, required String password}) async {
-  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/users/login');
+  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/users/login');
   final request = http.Request('POST', url);
 
   request.headers.addAll({'Content-Type': 'application/json'});
@@ -29,12 +29,10 @@ Future<Map<String, dynamic>> login(
     return jsonResponse;
   } else {
     final responseBody = await response.stream.bytesToString();
-    final errorMessage = json.decode(responseBody)['error'] ?? 'Failed to login';
-    throw Exception(errorMessage);
+    final errorMessage = json.decode(responseBody)['message'];
+    throw (errorMessage);
   }
 }
-
-
 
 //register function
 Future<Map<String, dynamic>> register({
@@ -45,7 +43,7 @@ Future<Map<String, dynamic>> register({
   required String phone,
   required String photo,
 }) async {
-  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/users/signup');
+  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/users/signup');
   final request = http.Request('POST', url);
 
   request.headers.addAll({'Content-Type': 'application/json'});
@@ -76,17 +74,15 @@ Future<Map<String, dynamic>> register({
         .first;
     return jsonResponse;
   } else {
-    final errorResponse = await response.stream.bytesToString();
-    final errorMessage = json.decode(errorResponse)['message'] as String;
-    throw Exception('Failed to sign up: $errorMessage');
+    final responseBody = await response.stream.bytesToString();
+    final errorMessage = json.decode(responseBody)['message'];
+    throw (errorMessage);
   }
 }
 
-
-
 //forget password function
 Future<void> forgotPassword(String email) async {
-  const url = 'https://utopiaapi.cyclic.app/api/v1/users/forgetPassword';
+  const url = 'https://unihub.azurewebsites.net/api/v1/users/forgetPassword';
 
   final response = await http.post(
     Uri.parse(url),
@@ -104,16 +100,16 @@ Future<void> forgotPassword(String email) async {
   }
 }
 
-
-
 //change password function
-Future<void> changePassword(String password, String newPassword, String newPasswordConfirm) async {
+Future<void> changePassword(
+    String password, String newPassword, String newPasswordConfirm) async {
   final token = await storage.read(key: 'token');
   if (token == null) {
     // Handle token not found error
     throw Exception('Access token not found');
   }
-  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/users/updatePassword');
+  final url =
+      Uri.parse('https://unihub.azurewebsites.net/api/v1/users/updatePassword');
   final headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $token',

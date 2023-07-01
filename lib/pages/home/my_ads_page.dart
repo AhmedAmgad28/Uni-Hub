@@ -18,14 +18,12 @@ class MyAdsPage extends StatefulWidget {
 class _MyAdsPageState extends State<MyAdsPage> {
   late Future<Map<String, dynamic>> _userData;
   late Map<String, dynamic> item;
-  late String coverImgUrl;
 
   @override
   void initState() {
     super.initState();
     _userData = getUserData();
     item = {'title': 'My Item', 'price': 100, 'description': 'A sample item'};
-    coverImgUrl = '';
   }
 
   @override
@@ -73,7 +71,9 @@ class _MyAdsPageState extends State<MyAdsPage> {
             );
           } else {
             final user = snapshot.data;
-            final items = user!['items'].where((item) => item['approved'] != false).toList();
+            final items = user!['items']
+                .where((item) => item['approved'] != false)
+                .toList();
 
             return Column(
               children: [
@@ -82,25 +82,6 @@ class _MyAdsPageState extends State<MyAdsPage> {
                     itemCount: items.length,
                     itemBuilder: (context, index) {
                       var item = items[index];
-                      if (item['_id'] == "6467ab02d75256041c2b24bc") {
-                        coverImgUrl =
-                            'https://5.imimg.com/data5/XA/YN/MY-4078569/introduction-to-information-systems-book-500x500.png'; // Replace with the URL for the first product
-                      } else if (item['_id'] == "646794f7912f4e932dec9369") {
-                        coverImgUrl =
-                            'https://m.media-amazon.com/images/I/51HV36xU6yL._SX354_BO1,204,203,200_.jpg'; // Replace with the URL for the second product
-                      } else if (item['_id'] == "645ad66701a6c0099057eb72") {
-                        coverImgUrl =
-                            'https://play-lh.googleusercontent.com/P2VMEenhpIsubG2oWbvuLGrs0GyyzLiDosGTg8bi8htRXg9Uf0eUtHiUjC28p1jgHzo'; // Replace with the URL for the third product
-                      } else if (item['_id'] == "64559a8ede7bed79a9b7526f") {
-                        coverImgUrl =
-                            'https://5.imimg.com/data5/FW/BE/JQ/SELLER-1731045/ms-office-software-500x500.jpg'; // Replace with the URL for the second product
-                      } else if (item['_id'] == "64556d96706250ad9660fbcb") {
-                        coverImgUrl =
-                            'https://www.egytech.net/wp-content/uploads/2021/01/EGYTECH-G3-3500-I7-scaled.jpg'; // Replace with the URL for the second product
-                      } else {
-                        coverImgUrl =
-                            'https://item-shopping.c.yimg.jp/i/l/shimamura-gakufu_g0225648'; // Replace with the default URL
-                      }
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -307,10 +288,7 @@ class _MyAdsPageState extends State<MyAdsPage> {
                               left: 22,
                               top: 16,
                               child: Image.network(
-                                item['coverImg'] != null &&
-                                        Uri.parse(item['coverImg']!).isAbsolute
-                                    ? item['coverImg']!
-                                    : coverImgUrl,
+                                "https://unihub.azurewebsites.net/imgs/items/item-63fc200199616b2f3df8506b-1687904402238-cover.jpeg",
                                 height: 100,
                                 width: 90,
                               ),

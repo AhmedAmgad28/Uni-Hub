@@ -13,7 +13,7 @@ Future<Map<String, dynamic>> getMe() async {
     throw Exception('Access token not found');
   }
 
-  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/users/me');
+  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/users/me');
 
   final response = await http.get(
     url,
@@ -41,7 +41,7 @@ Future<Map<String, dynamic>> getUserData() async {
     throw Exception('Access token not found');
   }
 
-  const url = 'https://utopiaapi.cyclic.app/api/v1/users/me';
+  const url = 'https://unihub.azurewebsites.net/api/v1/users/me';
 
   final response = await http.get(
     Uri.parse(url),
@@ -67,7 +67,7 @@ Future<void> updateProfile(String name, String phone, String photo) async {
     // Handle token not found error
     throw Exception('Access token not found');
   }
-  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/users/updateMe');
+  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/users/updateMe');
   final headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $token',
@@ -95,7 +95,7 @@ Future<void> deleteMe() async {
     // Handle token not found error
     throw Exception('Access token not found');
   }
-  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/users/deleteMe');
+  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/users/deleteMe');
   final response = await http.delete(
     url,
     headers: {'Authorization': 'Bearer $token'},

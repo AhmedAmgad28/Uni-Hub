@@ -11,7 +11,6 @@ import '../category/accessories_page.dart';
 import '../category/other_page.dart';
 import 'product_details_page.dart';
 import 'package:intl/intl.dart';
-
 import '../category/services_page.dart';
 import '../category/tools_page.dart';
 
@@ -30,6 +29,7 @@ class _HomePageState extends State<HomePage> {
     final formattedDate = formatter.format(parsedDate);
     return formattedDate;
   }
+
   late Future<itemsModel> _futureItemsModel;
 
   @override
@@ -68,9 +68,26 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 0.7, left: 1, right: 1),
-            child: SearchTextField(hintText: 'Search for products',),
+          Padding(
+            padding: const EdgeInsets.only(top: 0.7, left: 1, right: 1),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: SearchTextField(
+                    hintText: 'Search for products',
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.sort,
+                    color: kPrimaryColor,
+                  ),
+                  onPressed: () {
+                    // Implement your sort button logic here
+                  },
+                ),
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -95,9 +112,9 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               Icons.book_outlined,
                               color: kPrimaryColor,
@@ -133,9 +150,9 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               Icons.design_services_rounded,
                               color: kPrimaryColor,
@@ -171,9 +188,9 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               Icons.electrical_services_rounded,
                               color: kPrimaryColor,
@@ -200,8 +217,7 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(
-                              context, ServicesPage.id);
+                          Navigator.pushNamed(context, ServicesPage.id);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: kBackgroundColor,
@@ -210,9 +226,9 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               Icons.miscellaneous_services_outlined,
                               color: kPrimaryColor,
@@ -239,8 +255,7 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(
-                              context, AccessoriesPage.id);
+                          Navigator.pushNamed(context, AccessoriesPage.id);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: kBackgroundColor,
@@ -249,9 +264,9 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               Icons.type_specimen_sharp,
                               color: kPrimaryColor,
@@ -278,8 +293,7 @@ class _HomePageState extends State<HomePage> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(
-                              context, OthersPage.id);
+                          Navigator.pushNamed(context, OthersPage.id);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: kBackgroundColor,
@@ -288,9 +302,9 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               Icons.devices_other_rounded,
                               color: kPrimaryColor,
@@ -325,32 +339,6 @@ class _HomePageState extends State<HomePage> {
                     itemCount: data!.items!.length,
                     itemBuilder: (BuildContext context, int index) {
                       final item = data.items![index];
-
-                      String coverImgUrl;
-                      if (item.sId == "6467ab02d75256041c2b24bc") {
-                        coverImgUrl =
-                            'https://5.imimg.com/data5/XA/YN/MY-4078569/introduction-to-information-systems-book-500x500.png'; // Replace with the URL for the first product
-                      } else if (item.sId == "646794f7912f4e932dec9369") {
-                        coverImgUrl =
-                            'https://m.media-amazon.com/images/I/51HV36xU6yL._SX354_BO1,204,203,200_.jpg'; // Replace with the URL for the second product
-                      } else if (item.sId == "645ad66701a6c0099057eb72") {
-                        coverImgUrl =
-                            'https://play-lh.googleusercontent.com/P2VMEenhpIsubG2oWbvuLGrs0GyyzLiDosGTg8bi8htRXg9Uf0eUtHiUjC28p1jgHzo'; // Replace with the URL for the third product
-                      } else if (item.sId == "64559a8ede7bed79a9b7526f") {
-                        coverImgUrl =
-                            'https://5.imimg.com/data5/FW/BE/JQ/SELLER-1731045/ms-office-software-500x500.jpg'; // Replace with the URL for the second product
-                      } else if (item.sId == "64556d96706250ad9660fbcb") {
-                        coverImgUrl =
-                            'https://www.egytech.net/wp-content/uploads/2021/01/EGYTECH-G3-3500-I7-scaled.jpg'; // Replace with the URL for the second product
-                      } else {
-                        coverImgUrl =
-                            'https://item-shopping.c.yimg.jp/i/l/shimamura-gakufu_g0225648'; // Replace with the default URL
-                      }
-
-                      final coverImgUrlFinal = item.coverImg != null &&
-                              Uri.parse(item.coverImg!).isAbsolute
-                          ? item.coverImg!
-                          : coverImgUrl;
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -507,7 +495,7 @@ class _HomePageState extends State<HomePage> {
                               left: 20,
                               top: 6,
                               child: Image.network(
-                                coverImgUrlFinal,
+                                "https://unihub.azurewebsites.net/imgs/items/${item.coverImg}",
                                 height: 100,
                                 width: 90,
                               ),

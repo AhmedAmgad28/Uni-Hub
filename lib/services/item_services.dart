@@ -10,7 +10,21 @@ final storage = FlutterSecureStorage();
 
 //get all items 
 Future<itemsModel> getAllServices() async {
-  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/items');
+  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/items?page=0');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    return itemsModel.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to fetch data');
+  }
+}
+
+
+
+//get Sorted items 
+Future<itemsModel> getSortedItems(int minPrice, int maxPrice, String sortBy) async {
+  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/items?price[gte]=$minPrice&price[lte]=$maxPrice&sort=$sortBy');
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -24,7 +38,7 @@ Future<itemsModel> getAllServices() async {
 
 //get all items by category
 Future<itemsModel> getitemsByCategory(String category) async {
-  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/items?category=$category');
+  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/items?category=$category');
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -44,7 +58,7 @@ Future<Items> getItemById(String itemId) async {
   }
 
   final response = await http.get(
-    Uri.parse('https://utopiaapi.cyclic.app/api/v1/items/$itemId'),
+    Uri.parse('https://unihub.azurewebsites.net/api/v1/items/$itemId'),
     headers: {'Authorization': 'Bearer $token'},
   );
 
@@ -88,7 +102,7 @@ Future<http.Response> addProduct({
     throw Exception('Access token not found');
   }
 
-  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/items');
+  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/items');
 
   final imgNames = imgs.map((file) => file.path.split('/').last).toList();
   final coverImg = coverImgPath.split('/').last.replaceAll("'", "");
@@ -116,7 +130,7 @@ Future<http.Response> addProduct({
     headers: {
       'Content-Type': 'application/json',
       'Authorization':
-          'Bearer $token', // Add the Authorization header with the token value
+          'Bearer $token',
     },
   );
   return response;
@@ -133,7 +147,7 @@ Future<void> updateItem(
     throw Exception('Access token not found');
   }
 
-  final url = 'https://utopiaapi.cyclic.app/api/v1/items/${item['_id']}';
+  final url = 'https://unihub.azurewebsites.net/api/v1/items/${item['_id']}';
 
   final response = await http.patch(
     Uri.parse(url),
@@ -162,7 +176,7 @@ Future<void> deleteItem(Map<String, dynamic> item) async {
     throw Exception('Access token not found');
   }
 
-  final url = 'https://utopiaapi.cyclic.app/api/v1/items/${item['_id']}';
+  final url = 'https://unihub.azurewebsites.net/api/v1/items/${item['_id']}';
 
   final response = await http.delete(
     Uri.parse(url),

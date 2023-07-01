@@ -15,7 +15,7 @@ Future<List<Items>> getFavourites() async {
   }
 
   final response = await http.get(
-    Uri.parse('https://utopiaapi.cyclic.app/api/v1/items/Fav-Items'),
+    Uri.parse('https://unihub.azurewebsites.net/api/v1/items/Fav-Items'),
     headers: {'Authorization': 'Bearer $token'},
   );
 
@@ -38,7 +38,7 @@ Future<void> updateFavoriteItem(String itemId) async {
   }
   
   final response = await http.patch(
-    Uri.parse('https://utopiaapi.cyclic.app/api/v1/items/Fav-Items/$itemId'),
+    Uri.parse('https://unihub.azurewebsites.net/api/v1/items/Fav-Items/$itemId'),
     headers: {'Authorization': 'Bearer $token'},
   );
 

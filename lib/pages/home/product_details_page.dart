@@ -83,9 +83,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   height: 8,
                 ),
                 Image.network(
-                  item.coverImg != null && Uri.parse(item.coverImg!).isAbsolute
-                      ? item.coverImg!
-                      : coverImgUrl,
+                  "https://unihub.azurewebsites.net/imgs/items/${item.coverImg}",
                   height: 220,
                 ),
                 const SizedBox(
@@ -302,10 +300,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           vertical: 4, horizontal: 16),
                       child: Row(
                         children: [
-                          Image.asset(
-                            'assets/images/book.png',
-                            height: 80,
+                          CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                            "https://unihub.azurewebsites.net/imgs/users/${item.user!.photo}",
                           ),
+                        ),
                           Padding(
                             padding: const EdgeInsets.only(left: 12),
                             child: Column(
@@ -315,13 +315,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   item.user!.name!,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 18),
+                                      fontSize: 20),
                                 ),
                                 Text(
                                   'Member since ${reverseDateFormat(item.user!.joinAt!)}',
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 14),
+                                      fontSize: 16),
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -354,24 +354,24 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     const Divider(
                       thickness: 1,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
+                    const Padding(
+                      padding:  EdgeInsets.symmetric(
                           horizontal: 4, vertical: 4),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             "For Your Safety :",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w500),
                           ),
-                          const SizedBox(
+                          SizedBox(
                             height: 4,
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 3),
+                            padding:  EdgeInsets.symmetric(vertical: 3),
                             child: Row(
-                              children: const [
+                              children:  [
                                 Icon(Icons.arrow_right),
                                 Expanded(
                                     child: Text(
@@ -385,9 +385,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 3),
+                            padding: EdgeInsets.symmetric(vertical: 3),
                             child: Row(
-                              children: const [
+                              children:  [
                                 Icon(Icons.arrow_right),
                                 Expanded(
                                     child: Text(
@@ -401,9 +401,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 3),
+                            padding:  EdgeInsets.symmetric(vertical: 3),
                             child: Row(
-                              children: const [
+                              children:  [
                                 Icon(Icons.arrow_right),
                                 Expanded(
                                     child: Text(
@@ -417,9 +417,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 3),
+                            padding:  EdgeInsets.symmetric(vertical: 3),
                             child: Row(
-                              children: const [
+                              children:  [
                                 Icon(Icons.arrow_right),
                                 Expanded(
                                     child: Text(

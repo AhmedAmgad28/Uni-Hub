@@ -12,7 +12,7 @@ Future<Map<String, dynamic>> fetchChatRooms() async {
   }
 
   final response = await http.get(
-    Uri.parse('https://utopiaapi.cyclic.app/api/v1/chatRooms'),
+    Uri.parse('https://unihub.azurewebsites.net/api/v1/chatRooms'),
     headers: {
       'Authorization': 'Bearer $token',
     },
@@ -35,7 +35,7 @@ Future<Map<String, dynamic>> singleChatRoom(String chatRoomID) async {
   }
 
   final response = await http.get(
-    Uri.parse('https://utopiaapi.cyclic.app/api/v1/chatRooms/$chatRoomID'),
+    Uri.parse('https://unihub.azurewebsites.net/api/v1/chatRooms/$chatRoomID'),
     headers: {
       'Authorization': 'Bearer $token',
     },
@@ -60,7 +60,7 @@ Future<Map<String, dynamic>> postMessage(
   }
 
   final url = Uri.parse(
-      'https://utopiaapi.cyclic.app/api/v1/chatRooms/$chatRoomId/messages');
+      'https://unihub.azurewebsites.net/api/v1/chatRooms/$chatRoomId/messages');
   final headers = {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ Future<Map<String, dynamic>> createChatRoom(String receiverUserId) async {
   if (token == null) {
     throw Exception('Access token not found');
   }
-  final url = Uri.parse('https://utopiaapi.cyclic.app/api/v1/chatRooms');
+  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/chatRooms');
   final headers = {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
