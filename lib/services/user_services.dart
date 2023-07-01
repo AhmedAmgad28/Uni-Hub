@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 // ignore: prefer_const_constructors
 final storage = FlutterSecureStorage();
@@ -31,8 +34,6 @@ Future<Map<String, dynamic>> getMe() async {
   }
 }
 
-
-
 //i used it to get user ads
 Future<Map<String, dynamic>> getUserData() async {
   final token = await storage.read(key: 'token');
@@ -58,44 +59,55 @@ Future<Map<String, dynamic>> getUserData() async {
   }
 }
 
-
-
 //update user info
-Future<void> updateProfile(String name, String phone, String photo) async {
+Future<void> updateProfile(String name, String phone, File photo) async {
   final token = await storage.read(key: 'token');
   if (token == null) {
-    // Handle token not found error
+// Handle token not found error
     throw Exception('Access token not found');
   }
-  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/users/updateMe');
+  final url =
+      Uri.parse('https://unihub.azurewebsites.net/api/v1/users/updateMe');
   final headers = {
-    'Content-Type': 'application/json',
+    'Content-Type': 'multipart/form-data',
     'Authorization': 'Bearer $token',
   };
-  final body = jsonEncode({
-    'name': name,
-    'phone': phone,
-    'photo': photo,
-  });
-  final response = await http.patch(url, headers: headers, body: body);
+  final request = http.MultipartRequest('PATCH', url);
+  if (name.isNotEmpty) {
+    request.fields['name'] = name;
+  }
+  if (phone.isNotEmpty) {
+    request.fields['phone'] = phone;
+  }
+  // Scan the file using MediaScannerConnection class
+  final scannedUri = await MediaScannerConnection.scanFile(
+    photo.path,
+    ['image/jpeg'],
+  );
+  // Add the scanned file to the request
+  final scannedFile = File.fromUri(scannedUri);
+  request.files.add(await http.MultipartFile.fromPath('photo', scannedFile.path));
+  request.headers.addAll(headers);
+  final response = await request.send();
+  //print(request.headers);
   if (response.statusCode == 200) {
-    // Update successful
+// Update successful
   } else {
-    final message = jsonDecode(response.body)['message'] as String;
+    final message =
+        jsonDecode(await response.stream.bytesToString())['message'] as String;
     throw Exception(message);
   }
 }
 
-
-
-//delete user 
+//delete user
 Future<void> deleteMe() async {
   final token = await storage.read(key: 'token');
   if (token == null) {
     // Handle token not found error
     throw Exception('Access token not found');
   }
-  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/users/deleteMe');
+  final url =
+      Uri.parse('https://unihub.azurewebsites.net/api/v1/users/deleteMe');
   final response = await http.delete(
     url,
     headers: {'Authorization': 'Bearer $token'},
@@ -103,5 +115,31 @@ Future<void> deleteMe() async {
   if (response.statusCode == 204) {
   } else {
     throw json.decode(response.body)['message'];
+  }
+}
+
+class MediaScannerConnection {
+  static const MethodChannel _channel = MethodChannel('media_scan');
+  static Future<Uri> scanFile(String filePath, List<String> mimeTypes) async {
+    // Scan the file and get the URI
+    Uri uri = await MediaScannerConnection._scanFile(filePath, mimeTypes);
+    return uri;
+  }
+
+  // Private method to scan the file
+  static Future<Uri> _scanFile(String filePath, List<String> mimeTypes) async {
+    try {
+      // Call the native platform method to scan the file and get its URI
+      final result = await _channel.invokeMethod('scanFile', {
+        'path': filePath,
+        'mimeTypes': mimeTypes,
+      });
+      // Parse the result and create a URI
+      final uri = Uri.parse(result as String);
+      return uri;
+    } on PlatformException catch (e) {
+      // Handle any errors that occur during the scan
+      throw Exception('Error scanning file: $e');
+    }
   }
 }

@@ -1,13 +1,12 @@
 // ignore_for_file: unused_local_variable
 
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:project_v2/pages/guest/login_page.dart';
 import 'package:project_v2/services/authentication_services.dart';
 import 'package:project_v2/widgets/register_form_textfield.dart';
 import '../../helper/constants.dart';
 import '../../widgets/custom_button.dart';
+import '../home/navigator_home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   static const String id = 'RegisterPage';
@@ -26,16 +25,16 @@ class _RegisterPageState extends State<RegisterPage> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  File? _imageFile;
+  // File? _imageFile;
 
-  Future<void> _getImage(ImageSource source) async {
-    final pickedFile = await ImagePicker().pickImage(source: source);
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
-    }
-  }
+  // Future<void> _getImage(ImageSource source) async {
+  //   final pickedFile = await ImagePicker().pickImage(source: source);
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       _imageFile = File(pickedFile.path);
+  //     });
+  //   }
+  // }
 
   void _signUp() async {
     final name = _nameController.text.trim();
@@ -93,20 +92,26 @@ class _RegisterPageState extends State<RegisterPage> {
         password: password,
         passwordConfirm: confirmPassword,
         phone: phone,
-        photo: _imageFile != null ? _imageFile!.path : '',
       );
+      final userId = response['data']['user']['_id'];
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Success'),
-          content: const Text('Account Created Successfully.'),
+          content: const Text('Account Created Successfully.'),      
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, LoginPage.id);
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NavigatorHome(userId: userId),
+                    ),
+                  );
               },
-              child: const Text('LogIn'),
+              child: const Text('Ok'),
             ),
           ],
         ),
@@ -234,44 +239,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 hintText: 'Confirm Password',
                 obscureText: true,
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              const Text('Profile Image :', style: TextStyle(fontSize: 20)),
-              const SizedBox(height: 8.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton.icon(
-                    onPressed: () {
-                      _getImage(ImageSource.gallery);
-                    },
-                    icon: const Icon(Icons.photo,color: kPrimaryColor,),
-                    label: const Text('Choose Photo',style: TextStyle(color: kPrimaryColor),),
-                    style: ElevatedButton.styleFrom(backgroundColor: kBackgroundColor),
-                  ),
-                  TextButton.icon(
-                    onPressed: () {
-                      _getImage(ImageSource.camera);
-                    },
-                    icon: const Icon(Icons.camera_alt,color: kPrimaryColor,),
-                    label: const Text('Take Photo',style: TextStyle(color: kPrimaryColor),),
-                    style: ElevatedButton.styleFrom(backgroundColor: kBackgroundColor),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8.0),
-                Container(
-                    height: 150.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child:  _imageFile == null
-                        ? const Icon(Icons.add_a_photo, size: 40.0)
-                        : Image.file(_imageFile!),
-                  ),
               const SizedBox(
                 height: 16,
               ),

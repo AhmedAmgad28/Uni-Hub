@@ -41,7 +41,6 @@ Future<Map<String, dynamic>> register({
   required String password,
   required String passwordConfirm,
   required String phone,
-  required String photo,
 }) async {
   final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/users/signup');
   final request = http.Request('POST', url);
@@ -53,7 +52,6 @@ Future<Map<String, dynamic>> register({
     'password': password,
     'passwordConfirm': passwordConfirm,
     'phone': phone,
-    'photo': photo,
   });
 
   final response = await request.send();
@@ -64,14 +62,8 @@ Future<Map<String, dynamic>> register({
         .transform(json.decoder)
         .cast<Map<String, dynamic>>()
         .first;
-    return jsonResponse;
-  }
-  if (response.statusCode == 201) {
-    final jsonResponse = await response.stream
-        .transform(utf8.decoder)
-        .transform(json.decoder)
-        .cast<Map<String, dynamic>>()
-        .first;
+    final token = jsonResponse['token'];
+    await storage.write(key: 'token', value: token);
     return jsonResponse;
   } else {
     final responseBody = await response.stream.bytesToString();

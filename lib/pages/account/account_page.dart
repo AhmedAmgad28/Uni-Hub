@@ -84,8 +84,11 @@ class _AccountPageState extends State<AccountPage> {
                         radius: 60,
                         backgroundImage: NetworkImage(
                           profileImgUrl != null &&
-                                  Uri.parse(profileImgUrl).isAbsolute
-                              ? profileImgUrl
+                                  Uri.tryParse(
+                                              "https://unihub.azurewebsites.net/imgs/users/${userData['photo']}")
+                                          ?.isAbsolute ==
+                                      true
+                              ? "https://unihub.azurewebsites.net/imgs/users/${userData['photo']}"
                               : defaultProfileImgUrl,
                         ),
                       ),

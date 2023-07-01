@@ -30,10 +30,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   void _updateProfile() async {
     final name = _nameController.text;
     final phone = _phoneController.text;
-    final photo = _imageFile.toString();
+    final photo = _imageFile;
 
     try {
-      await updateProfile(name, phone, photo);
+      await updateProfile(name, phone, photo!);
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
