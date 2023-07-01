@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:project_v2/widgets/custom_button.dart';
 import '../../helper/constants.dart';
 import '../../models/product_model.dart';
 import '../../services/Favourite_service.dart';
+import '../../services/chat_services.dart';
 import '../../services/item_services.dart';
 import '../account/account_page.dart';
 import 'package:intl/intl.dart';
+import '../chat/single_chat_page.dart';
 import 'view_profile_page.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -25,8 +29,27 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     return formattedDate;
   }
 
-  late String coverImgUrl;
+  final storage = const FlutterSecureStorage();
+  String getTokenPayload(String token) {
+    final parts = token.split('.');
+    if (parts.length != 3) {
+      throw Exception('Invalid token');
+    }
+    final payload = parts[1];
+    final normalizedPayload = base64Url.normalize(payload);
+    final utf8Payload = utf8.decode(base64Url.decode(normalizedPayload));
+    return utf8Payload;
+  }
+
+  String getCurrentUserIdFromToken(String token) {
+    final payload = getTokenPayload(token);
+    final data = jsonDecode(payload);
+    return data['id'];
+  }
+
   late Future<Items> _futureItem;
+  final defaultProfileImgUrl =
+      'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png';
 
   @override
   void initState() {
@@ -419,7 +442,54 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: CustomButton(buttonText: 'Chat'),
+                  child: CustomButton(buttonText: 'Chat',onTap: () async {
+                                      try {
+                                        final chatRoomData =
+                                            await createChatRoom(item.user!.sId!);
+                                        final chatRoom =
+                                            chatRoomData['chatRoom'];
+                                        final token =
+                                            await storage.read(key: 'token');
+                                        final currentUserID =
+                                            getCurrentUserIdFromToken(token!);
+                                        // ignore: use_build_context_synchronously
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SingleChatRoomPage(
+                                              chatRoomId: chatRoom['_id'],
+                                              currentUserID: currentUserID,
+                                              userImage: item.user!.photo!,
+                                              userName: item.user!.name!,
+                                            ),
+                                          ),
+                                        );
+                                      } catch (e) {
+                                        if (e is Exception &&
+                                            e.toString().contains(
+                                                'Failed to create chat room: 500')) {
+                                          // Handle 500 error
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: const Text('Error'),
+                                              content: const Text(
+                                                  'Failed to create chat room. Please try again later.'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        } else {
+                                          // Handle other errors
+                                        }
+                                      }
+                                    },),
                 ),
               ],
             ),

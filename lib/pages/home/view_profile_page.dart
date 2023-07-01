@@ -152,11 +152,7 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                                                 SingleChatRoomPage(
                                               chatRoomId: chatRoom['_id'],
                                               currentUserID: currentUserID,
-                                              userImage:
-                                                  Uri.parse(widget.userPhoto)
-                                                          .isAbsolute
-                                                      ? widget.userPhoto
-                                                      : defaultProfileImgUrl,
+                                              userImage: widget.userPhoto,
                                               userName: widget.userName,
                                             ),
                                           ),

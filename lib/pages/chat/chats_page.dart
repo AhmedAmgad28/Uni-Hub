@@ -77,8 +77,6 @@ class _ChatsPageState extends State<ChatsPage> {
                 return bDate.compareTo(aDate);
               });
             }
-            const defaultProfileImgUrl =
-                'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png';
             return ListView.builder(
               itemCount: chatRooms.length,
               itemBuilder: (context, index) {
@@ -96,14 +94,8 @@ class _ChatsPageState extends State<ChatsPage> {
                 final sender = chatRoom['sender'];
                 final isCurrentUserReciever = userId == reciever['_id'];
                 final profileImgUrl = isCurrentUserReciever
-                    ? sender['photo'] != null &&
-                            Uri.parse(sender['photo']).isAbsolute
-                        ? sender['photo']
-                        : defaultProfileImgUrl
-                    : reciever['photo'] != null &&
-                            Uri.parse(reciever['photo']).isAbsolute
-                        ? reciever['photo']
-                        : defaultProfileImgUrl;
+                    ? sender['photo']
+                    : reciever['photo'];
                 final name =
                     isCurrentUserReciever ? sender['name'] : reciever['name'];
                 return GestureDetector(
@@ -141,7 +133,7 @@ class _ChatsPageState extends State<ChatsPage> {
                               const SizedBox(width: 4.0),
                               CircleAvatar(
                                 radius: 30.0,
-                                backgroundImage: NetworkImage(profileImgUrl),
+                                backgroundImage: NetworkImage("https://unihub.azurewebsites.net/imgs/users/$profileImgUrl"),
                               ),
                               const SizedBox(width: 14.0),
                               Expanded(

@@ -43,7 +43,7 @@ class _SingleChatRoomPageState extends State<SingleChatRoomPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(widget.userImage),
+              backgroundImage: NetworkImage("https://unihub.azurewebsites.net/imgs/users/${widget.userImage}"),
             ),
             const SizedBox(width: 18),
             Text(widget.userName),
