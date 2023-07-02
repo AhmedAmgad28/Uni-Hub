@@ -136,14 +136,32 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                                   IconButton(
                                     onPressed: () async {
                                       try {
-                                        final chatRoomData =
-                                            await createChatRoom(widget.userId);
-                                        final chatRoom =
-                                            chatRoomData['chatRoom'];
                                         final token =
                                             await storage.read(key: 'token');
                                         final currentUserID =
                                             getCurrentUserIdFromToken(token!);
+                                        if(currentUserID == widget.userId){
+                                          // ignore: use_build_context_synchronously
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: const Text('Error'),
+                                              content:  const Text(
+                                                  'Failed to create chat room. You can'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        } else {
+                                        final chatRoomData =
+                                            await createChatRoom(widget.userId);
+                                        final chatRoom =
+                                            chatRoomData['chatRoom'];
                                         // ignore: use_build_context_synchronously
                                         Navigator.push(
                                           context,
@@ -157,6 +175,7 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                                             ),
                                           ),
                                         );
+                                        }
                                       } catch (e) {
                                         if (e is Exception &&
                                             e.toString().contains(

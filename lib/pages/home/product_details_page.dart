@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -85,9 +87,22 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 const SizedBox(
                   height: 8,
                 ),
-                Image.network(
-                  "https://unihub.azurewebsites.net/imgs/items/${item.coverImg}",
-                  height: 220,
+                SizedBox(
+                  height: 263,
+                  child: PageView(
+                    children: [
+                      Image.network(
+                        "https://unihub.azurewebsites.net/imgs/items/${item.coverImg}",
+                        fit: BoxFit.cover,
+                      ),
+                      ...item.imgs!
+                          .map((img) => Image.network(
+                                "https://unihub.azurewebsites.net/imgs/items/$img",
+                                fit: BoxFit.cover,
+                              ))
+                          .toList(),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 8,
@@ -240,7 +255,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children:  [
+                            children: [
                               const Text(
                                 'Condition',
                                 style: TextStyle(
@@ -288,7 +303,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     const Divider(
                       thickness: 1,
                     ),
-                    
                     const Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 4, horizontal: 16),
@@ -304,11 +318,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       child: Row(
                         children: [
                           CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage(
-                            "https://unihub.azurewebsites.net/imgs/users/${item.user!.photo}",
+                            radius: 50,
+                            backgroundImage: NetworkImage(
+                              "https://unihub.azurewebsites.net/imgs/users/${item.user!.photo}",
+                            ),
                           ),
-                        ),
                           Padding(
                             padding: const EdgeInsets.only(left: 12),
                             child: Column(
@@ -329,16 +343,16 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ViewProfilePage(
-                                userId: item.user!.sId!,
-                                userName: item.user!.name!,
-                                userPhoto: item.user!.photo!,
-                                joinedAt: item.user!.joinAt!,
-                              ),
-                            ),
-                          );
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ViewProfilePage(
+                                          userId: item.user!.sId!,
+                                          userName: item.user!.name!,
+                                          userPhoto: item.user!.photo!,
+                                          joinedAt: item.user!.joinAt!,
+                                        ),
+                                      ),
+                                    );
                                   },
                                   child: const Text(
                                     'See Profile',
@@ -358,8 +372,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       thickness: 1,
                     ),
                     const Padding(
-                      padding:  EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 4),
+                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -372,9 +385,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             height: 4,
                           ),
                           Padding(
-                            padding:  EdgeInsets.symmetric(vertical: 3),
+                            padding: EdgeInsets.symmetric(vertical: 3),
                             child: Row(
-                              children:  [
+                              children: [
                                 Icon(Icons.arrow_right),
                                 Expanded(
                                     child: Text(
@@ -390,7 +403,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 3),
                             child: Row(
-                              children:  [
+                              children: [
                                 Icon(Icons.arrow_right),
                                 Expanded(
                                     child: Text(
@@ -404,9 +417,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             ),
                           ),
                           Padding(
-                            padding:  EdgeInsets.symmetric(vertical: 3),
+                            padding: EdgeInsets.symmetric(vertical: 3),
                             child: Row(
-                              children:  [
+                              children: [
                                 Icon(Icons.arrow_right),
                                 Expanded(
                                     child: Text(
@@ -420,9 +433,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             ),
                           ),
                           Padding(
-                            padding:  EdgeInsets.symmetric(vertical: 3),
+                            padding: EdgeInsets.symmetric(vertical: 3),
                             child: Row(
-                              children:  [
+                              children: [
                                 Icon(Icons.arrow_right),
                                 Expanded(
                                     child: Text(
@@ -442,54 +455,69 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: CustomButton(buttonText: 'Chat',onTap: () async {
-                                      try {
-                                        final chatRoomData =
-                                            await createChatRoom(item.user!.sId!);
-                                        final chatRoom =
-                                            chatRoomData['chatRoom'];
-                                        final token =
-                                            await storage.read(key: 'token');
-                                        final currentUserID =
-                                            getCurrentUserIdFromToken(token!);
-                                        // ignore: use_build_context_synchronously
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SingleChatRoomPage(
-                                              chatRoomId: chatRoom['_id'],
-                                              currentUserID: currentUserID,
-                                              userImage: item.user!.photo!,
-                                              userName: item.user!.name!,
-                                            ),
-                                          ),
-                                        );
-                                      } catch (e) {
-                                        if (e is Exception &&
-                                            e.toString().contains(
-                                                'Failed to create chat room: 500')) {
-                                          // Handle 500 error
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                              title: const Text('Error'),
-                                              content: const Text(
-                                                  'Failed to create chat room. Please try again later.'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  child: const Text('OK'),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        } else {
-                                          // Handle other errors
-                                        }
-                                      }
-                                    },),
+                  child: CustomButton(
+                    buttonText: 'Chat',
+                    onTap: () async {
+                      try {
+                        final token = await storage.read(key: 'token');
+                        final currentUserID = getCurrentUserIdFromToken(token!);
+                        if (currentUserID == item.user!.sId) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Error'),
+                              content: const Text(
+                                  'Failed to create chat room. You can not chat with yourself here'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          final chatRoomData =
+                              await createChatRoom(item.user!.sId!);
+                          final chatRoom = chatRoomData['chatRoom'];
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SingleChatRoomPage(
+                                chatRoomId: chatRoom['_id'],
+                                currentUserID: currentUserID,
+                                userImage: item.user!.photo!,
+                                userName: item.user!.name!,
+                              ),
+                            ),
+                          );
+                        }
+                      } catch (e) {
+                        if (e is Exception &&
+                            e
+                                .toString()
+                                .contains('Failed to create chat room: 500')) {
+                          // Handle 500 error
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Error'),
+                              content: const Text(
+                                  'Failed to create chat room. Please try again later.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          // Handle other errors
+                        }
+                      }
+                    },
+                  ),
                 ),
               ],
             ),

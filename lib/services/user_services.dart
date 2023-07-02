@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-
 // ignore: prefer_const_constructors
 final storage = FlutterSecureStorage();
 
@@ -79,19 +78,18 @@ Future<void> updateProfile(String name, String phone, File photo) async {
   if (phone.isNotEmpty) {
     request.fields['phone'] = phone;
   }
-  // Scan the file using MediaScannerConnection class
-  final scannedUri = await MediaScannerConnection.scanFile(
-    photo.path,
-    ['image/jpeg'],
-  );
-  // Add the scanned file to the request
-  final scannedFile = File.fromUri(scannedUri);
-  request.files.add(await http.MultipartFile.fromPath('photo', scannedFile.path));
+
+  var stream = http.ByteStream(photo.openRead());
+  stream.cast();
+  var length = await photo.length();
+
+  var multiport = http.MultipartFile('photo', stream, length);
+  request.files.add(multiport);
+
   request.headers.addAll(headers);
   final response = await request.send();
   //print(request.headers);
   if (response.statusCode == 200) {
-// Update successful
   } else {
     final message =
         jsonDecode(await response.stream.bytesToString())['message'] as String;

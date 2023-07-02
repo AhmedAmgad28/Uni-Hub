@@ -92,10 +92,23 @@ class _ProductGuestDetailsPageState extends State<ProductGuestDetailsPage> {
                         const SizedBox(
                           height: 8,
                         ),
-                        Image.network(
-                          "https://unihub.azurewebsites.net/imgs/items/${item.coverImg}",
-                          height: 220,
-                        ),
+                        SizedBox(
+                  height: 263,
+                  child: PageView(
+                    children: [
+                      Image.network(
+                        "https://unihub.azurewebsites.net/imgs/items/${item.coverImg}",
+                        fit: BoxFit.cover,
+                      ),
+                      ...item.imgs!
+                          .map((img) => Image.network(
+                                "https://unihub.azurewebsites.net/imgs/items/$img",
+                                fit: BoxFit.cover,
+                              ))
+                          .toList(),
+                    ],
+                  ),
+                ),
                         const SizedBox(
                           height: 8,
                         ),

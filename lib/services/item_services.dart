@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable, prefer_const_constructors
 
+import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import '../models/product_model.dart';
@@ -64,6 +65,15 @@ Future<Items> getItemById(String itemId) async {
 
   if (response.statusCode == 200) {
     final jsonResponse = jsonDecode(response.body)['data']['item'];
+    final locationJson = jsonResponse['location'];
+    final location = Location(
+      coordinates: List<double>.from(locationJson['coordinates']),
+      address: locationJson['address'],
+      description: locationJson['description'],
+      geoType: locationJson['geoType'],
+    );
+    final imgsJson = jsonResponse['imgs'];
+    final imgs = List<String>.from(imgsJson);
     return Items(
       title: jsonResponse['title'],
       price: jsonResponse['price'],
@@ -74,6 +84,8 @@ Future<Items> getItemById(String itemId) async {
       city: jsonResponse['city'],
       createAt: jsonResponse['createAt'],
       user: User.fromJson(jsonResponse['user']),
+      location: location,
+      imgs: imgs,
     );
   } else {
     throw Exception('Failed to load item');
@@ -87,7 +99,7 @@ Future<http.Response> addProduct({
   required String title,
   required double price,
   required String description,
-  required String coverImgPath,
+  required File coverImg,
   required List<File> imgs,
   required String category,
   required String condition,
@@ -105,35 +117,45 @@ Future<http.Response> addProduct({
   final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/items');
 
   final imgNames = imgs.map((file) => file.path.split('/').last).toList();
-  final coverImg = coverImgPath.split('/').last.replaceAll("'", "");
 
-  final data = {
-    'title': title,
-    'price': price,
-    'description': description,
-    'coverImg': coverImg,
-    'imgs': imgNames,
-    'category': category,
-    'condition': condition,
-    'city': city,
-    'location': {
-      'type': 'point',
-      'coordinates': [lng, lat],
-      'address': address,
-      'description': locationDescription,
-    },
-  };
+  final request = http.MultipartRequest('POST', url)
+    ..headers['Authorization'] = 'Bearer $token'
+    ..fields.addAll({
+      'title': title,
+      'price': price.toString(),
+      'description': description,
+      'category': category,
+      'condition': condition,
+      'city': city,
+      'location': jsonEncode({
+        'type': 'point',
+        'coordinates': [lng, lat],
+        'address': address,
+        'description': locationDescription,
+      }),
+    })
+    ..files.add(await http.MultipartFile.fromPath('coverImg', coverImg.path));
 
-  final response = await http.post(
-    url,
-    body: jsonEncode(data),
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer $token',
-    },
-  );
-  return response;
+  for (final imgFile in imgs) {
+    request.files.add(await http.MultipartFile.fromPath('imgs', imgFile.path));
+  }
+
+  try {
+    final response = await request.send().timeout(Duration(seconds: 60));
+
+    if (response.statusCode == 201) {
+      final responseData = await response.stream.bytesToString();
+      return http.Response(responseData, response.statusCode);
+    } else if (response.statusCode == 504) {
+      throw TimeoutException('Request timed out');
+    } else {
+      throw Exception('Failed to add product. ${response.statusCode}');
+    }
+  } on SocketException catch (e) {
+    throw Exception('Failed to add product. $e');
+  } catch (e) {
+    throw Exception('Failed to add product. $e');
+  }
 }
 
 

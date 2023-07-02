@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:project_v2/helper/constants.dart';
@@ -61,9 +62,29 @@ class _SellProductPageState extends State<SellProductPage> {
   Future<void> _getImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
     if (pickedFile != null) {
-      setState(() {
-        _selectedImages.add(File(pickedFile.path));
-      });
+      final image = File(pickedFile.path);
+      if (_selectedImages.length < 5) {
+        setState(() {
+          _selectedImages.add(image);
+        });
+      } else {
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Error'),
+              content: const Text('You can only select up to 5 images.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 
@@ -97,12 +118,13 @@ class _SellProductPageState extends State<SellProductPage> {
   }
 
   void _submitForm() async {
-    if (_formKey.currentState!.validate()) {
+  if (_formKey.currentState!.validate()) {
+    try {
       final response = await addProduct(
         title: _titleController.text,
         price: double.parse(_priceController.text),
         description: _descriptionController.text,
-        coverImgPath: _selectedImages.first.toString(),
+        coverImg: _selectedImages.first,
         imgs: _selectedImages,
         category: _categoryController.text,
         condition: _conditionController.text,
@@ -124,8 +146,7 @@ class _SellProductPageState extends State<SellProductPage> {
         // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(
           context,
-          NavigatorHome
-              .id, 
+          NavigatorHome.id,
           (route) => false,
         );
         // ignore: use_build_context_synchronously
@@ -153,7 +174,7 @@ class _SellProductPageState extends State<SellProductPage> {
           builder: (context) {
             return AlertDialog(
               title: const Text('Error'),
-              content: const Text('Failed to add product'),
+              content: Text('Failed to add product ${response.reasonPhrase}'),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -166,8 +187,49 @@ class _SellProductPageState extends State<SellProductPage> {
           },
         );
       }
+    } on TimeoutException catch (_) {
+      // Show a timeout message
+      // ignore: use_build_context_synchronously
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Failed to add product. Request timed out. Please wait and try again later.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              )
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      // Show a generic error message
+      // ignore: use_build_context_synchronously
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text('Failed to add product. $e'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              )
+            ],
+          );
+        },
+      );
     }
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -301,56 +363,16 @@ class _SellProductPageState extends State<SellProductPage> {
                 },
               ),
               const SizedBox(height: 16.0),
-              const Text(
-                'Cover Image',
-                style: TextStyle(fontSize: 18.0),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Allow the user to select an image from either the camera or the gallery
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return SafeArea(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ListTile(
-                              leading: const Icon(Icons.camera_alt),
-                              title: const Text('Take Photo'),
-                              onTap: () {
-                                _getImage(ImageSource.camera);
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.photo_library),
-                              title: const Text('Choose from Gallery'),
-                              onTap: () {
-                                _getImage(ImageSource.gallery);
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: Container(
-                  height: 150.0,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(12.0),
+              const Row(
+                children: [
+                  Text('Product Images', style: TextStyle(fontSize: 18)),
+                  Padding(
+                    padding: EdgeInsets.only(left: 50.0),
+                    child: Text('(Add from 3 to 5 images)',
+                        style: TextStyle(fontSize: 12)),
                   ),
-                  child: _selectedImages.isEmpty
-                      ? const Icon(Icons.add_a_photo, size: 64.0)
-                      : Image.file(_selectedImages.first),
-                ),
+                ],
               ),
-              const SizedBox(height: 16.0),
-              const Text('Product Images', style: TextStyle(fontSize: 18)),
               const SizedBox(height: 8.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -374,18 +396,24 @@ class _SellProductPageState extends State<SellProductPage> {
               const SizedBox(height: 8.0),
               if (_selectedImages.isNotEmpty)
                 SizedBox(
-                  height: 150,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
+                  height: 150.0,
+                  width: 200,
+                  child: PageView.builder(
                     itemCount: _selectedImages.length,
                     itemBuilder: (context, index) {
                       final image = _selectedImages[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      return Center(
                         child: Image.file(image, width: 150),
                       );
                     },
                   ),
+                ),
+                const Padding(
+                  padding:  EdgeInsets.all(8.0),
+                  child:  Text(
+                      'Note: The First image will be the Cover Image for your Product',
+                      style: TextStyle(fontSize: 14, color: Colors.black),
+                    ),
                 ),
               const SizedBox(height: 16.0),
               Column(
@@ -409,56 +437,11 @@ class _SellProductPageState extends State<SellProductPage> {
                           });
                         },
                       ),
-                      const SizedBox(width: 8.0),
                       const Text(
-                        'Latitude:',
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                      const SizedBox(width: 8.0),
-                      Expanded(
-                        child: TextFormField(
-                          controller: _latController,
-                          style: const TextStyle(color: Colors.black),
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Latitude',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a latitude';
-                            }
-                            if (double.tryParse(value) == null) {
-                              return 'Please enter a valid latitude';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 8.0),
-                      const Text(
-                        'Longitude:',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(width: 8.0),
-                      Expanded(
-                        child: TextFormField(
-                          controller: _lngController,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Longitude',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a longitude';
-                            }
-                            if (double.tryParse(value) == null) {
-                              return 'Please enter a valid longitude';
-                            }
-                            return null;
-                          },
-                        ),
+                        "click here to get your accurate location",
+                        style: TextStyle(
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.w700),
                       ),
                     ],
                   ),
