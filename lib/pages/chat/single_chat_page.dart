@@ -43,7 +43,8 @@ class _SingleChatRoomPageState extends State<SingleChatRoomPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage("https://unihub.azurewebsites.net/imgs/users/${widget.userImage}"),
+              backgroundImage: NetworkImage(
+                  "https://unihub.azurewebsites.net/imgs/users/${widget.userImage}"),
             ),
             const SizedBox(width: 18),
             Text(widget.userName),
@@ -59,7 +60,7 @@ class _SingleChatRoomPageState extends State<SingleChatRoomPage> {
                 if (snapshot.hasData) {
                   final chatRoom = snapshot.data!['chatRoom'];
                   messages = chatRoom['Messages'];
-                   final currentUser = widget.currentUserID;
+                  final currentUser = widget.currentUserID;
                   if (messages.isEmpty) {
                     return const Center(
                       child: Text('There are no messages yet.'),
@@ -113,6 +114,18 @@ class _SingleChatRoomPageState extends State<SingleChatRoomPage> {
                         });
                         _textEditingController.clear();
                       }
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SingleChatRoomPage(
+                          chatRoomId: widget.chatRoomId,
+                          currentUserID: widget.currentUserID,
+                          userImage: widget.userImage,
+                          userName: widget.userName,
+                        ),
+                      ),
+                    );
                     },
                   ),
                 ),
@@ -127,6 +140,18 @@ class _SingleChatRoomPageState extends State<SingleChatRoomPage> {
                       });
                       _textEditingController.clear();
                     }
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SingleChatRoomPage(
+                          chatRoomId: widget.chatRoomId,
+                          currentUserID: widget.currentUserID,
+                          userImage: widget.userImage,
+                          userName: widget.userName,
+                        ),
+                      ),
+                    );
                   },
                   icon: const Icon(
                     Icons.send,
