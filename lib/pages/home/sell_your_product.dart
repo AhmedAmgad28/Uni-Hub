@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:project_v2/helper/constants.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../services/item_services.dart';
 import 'package:geolocator/geolocator.dart';
-import '../home/navigator_home_page.dart';
+import 'sell_your_product2.dart';
 
 class SellProductPage extends StatefulWidget {
   const SellProductPage({super.key});
@@ -42,7 +41,7 @@ class _SellProductPageState extends State<SellProductPage> {
   final _lngController = TextEditingController();
   final _addressController = TextEditingController();
   final _locationDescriptionController = TextEditingController();
-  final List<File> _selectedImages = [];
+  //final List<File> _selectedImages = [];
 
   final List<Category> _categories = [
     const Category(value: 'Books', label: 'Books'),
@@ -58,35 +57,6 @@ class _SellProductPageState extends State<SellProductPage> {
     const Condition(value: 'Used', label: 'Used'),
     const Condition(value: 'Other', label: 'Other'),
   ];
-
-  Future<void> _getImage(ImageSource source) async {
-    final pickedFile = await ImagePicker().pickImage(source: source);
-    if (pickedFile != null) {
-      final image = File(pickedFile.path);
-      if (_selectedImages.length < 5) {
-        setState(() {
-          _selectedImages.add(image);
-        });
-      } else {
-        // ignore: use_build_context_synchronously
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Error'),
-              content: const Text('You can only select up to 5 images.'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    }
-  }
 
   Future<Position> _getCurrentLocation() async {
     bool serviceEnabled;
@@ -124,8 +94,8 @@ class _SellProductPageState extends State<SellProductPage> {
         title: _titleController.text,
         price: double.parse(_priceController.text),
         description: _descriptionController.text,
-        coverImg: _selectedImages.first,
-        imgs: _selectedImages,
+        // coverImg: _selectedImages.first,
+        // imgs: _selectedImages,
         category: _categoryController.text,
         condition: _conditionController.text,
         city: _cityController.text,
@@ -137,34 +107,13 @@ class _SellProductPageState extends State<SellProductPage> {
 
       // Check if product was added successfully
       if (response.statusCode == 201) {
-        // Show a success message and navigate back to the previous screen
+        final responseData = json.decode(response.body);
+        final itemId = responseData['item']['_id'];
+
         // ignore: use_build_context_synchronously
-        if (!Navigator.of(context).canPop()) {
-          // Wait for the navigator to unlock before navigating
-          await Future.delayed(const Duration(milliseconds: 50));
-        }
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamedAndRemoveUntil(
+        await Navigator.push(
           context,
-          NavigatorHome.id,
-          (route) => false,
-        );
-        // ignore: use_build_context_synchronously
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Product added successfully!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                )
-              ],
-            );
-          },
+          MaterialPageRoute(builder: (context) => SellProductPage2(itemId: itemId)),
         );
       } else {
         // Show an error message
@@ -187,28 +136,7 @@ class _SellProductPageState extends State<SellProductPage> {
           },
         );
       }
-    } on TimeoutException catch (_) {
-      // Show a timeout message
-      // ignore: use_build_context_synchronously
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Failed to add product. Request timed out. Please wait and try again later.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('OK'),
-              )
-            ],
-          );
-        },
-      );
     } catch (e) {
-      // Show a generic error message
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
@@ -362,59 +290,6 @@ class _SellProductPageState extends State<SellProductPage> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16.0),
-              const Row(
-                children: [
-                  Text('Product Images', style: TextStyle(fontSize: 18)),
-                  Padding(
-                    padding: EdgeInsets.only(left: 50.0),
-                    child: Text('(Add from 3 to 5 images)',
-                        style: TextStyle(fontSize: 12)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () => _getImage(ImageSource.camera),
-                    icon: const Icon(Icons.camera_alt),
-                    label: const Text('Take Photo'),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: kPrimaryColor),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () => _getImage(ImageSource.gallery),
-                    icon: const Icon(Icons.image),
-                    label: const Text('Choose from Gallery'),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: kPrimaryColor),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8.0),
-              if (_selectedImages.isNotEmpty)
-                SizedBox(
-                  height: 150.0,
-                  width: 200,
-                  child: PageView.builder(
-                    itemCount: _selectedImages.length,
-                    itemBuilder: (context, index) {
-                      final image = _selectedImages[index];
-                      return Center(
-                        child: Image.file(image, width: 150),
-                      );
-                    },
-                  ),
-                ),
-                const Padding(
-                  padding:  EdgeInsets.all(8.0),
-                  child:  Text(
-                      'Note: The First image will be the Cover Image for your Product',
-                      style: TextStyle(fontSize: 14, color: Colors.black),
-                    ),
-                ),
               const SizedBox(height: 16.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

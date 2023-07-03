@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable, prefer_const_constructors
-
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
@@ -9,7 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final storage = FlutterSecureStorage();
 
-//get all items 
+//get all items
 Future<itemsModel> getAllServices() async {
   final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/items?page=0');
   final response = await http.get(url);
@@ -21,11 +22,11 @@ Future<itemsModel> getAllServices() async {
   }
 }
 
-
-
-//get Sorted items 
-Future<itemsModel> getSortedItems(int minPrice, int maxPrice, String sortBy) async {
-  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/items?price[gte]=$minPrice&price[lte]=$maxPrice&sort=$sortBy');
+//get Sorted items
+Future<itemsModel> getSortedItems(
+    int minPrice, int maxPrice, String sortBy) async {
+  final url = Uri.parse(
+      'https://unihub.azurewebsites.net/api/v1/items?price[gte]=$minPrice&price[lte]=$maxPrice&sort=$sortBy');
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -34,12 +35,11 @@ Future<itemsModel> getSortedItems(int minPrice, int maxPrice, String sortBy) asy
     throw Exception('Failed to fetch data');
   }
 }
-
-
 
 //get all items by category
 Future<itemsModel> getitemsByCategory(String category) async {
-  final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/items?category=$category');
+  final url = Uri.parse(
+      'https://unihub.azurewebsites.net/api/v1/items?category=$category');
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -48,8 +48,6 @@ Future<itemsModel> getitemsByCategory(String category) async {
     throw Exception('Failed to fetch data');
   }
 }
-
-
 
 //get the info of a single product
 Future<Items> getItemById(String itemId) async {
@@ -80,7 +78,7 @@ Future<Items> getItemById(String itemId) async {
       description: jsonResponse['description'],
       coverImg: jsonResponse['coverImg'],
       category: jsonResponse['category'],
-      condition:jsonResponse['condition'],
+      condition: jsonResponse['condition'],
       city: jsonResponse['city'],
       createAt: jsonResponse['createAt'],
       user: User.fromJson(jsonResponse['user']),
@@ -92,15 +90,11 @@ Future<Items> getItemById(String itemId) async {
   }
 }
 
-
-
 //add product
 Future<http.Response> addProduct({
   required String title,
   required double price,
   required String description,
-  required File coverImg,
-  required List<File> imgs,
   required String category,
   required String condition,
   required String city,
@@ -115,8 +109,6 @@ Future<http.Response> addProduct({
   }
 
   final url = Uri.parse('https://unihub.azurewebsites.net/api/v1/items');
-
-  final imgNames = imgs.map((file) => file.path.split('/').last).toList();
 
   final request = http.MultipartRequest('POST', url)
     ..headers['Authorization'] = 'Bearer $token'
@@ -133,32 +125,62 @@ Future<http.Response> addProduct({
         'address': address,
         'description': locationDescription,
       }),
-    })
-    ..files.add(await http.MultipartFile.fromPath('coverImg', coverImg.path));
+    });
 
-  for (final imgFile in imgs) {
-    request.files.add(await http.MultipartFile.fromPath('imgs', imgFile.path));
-  }
+  final response = await request.send().timeout(Duration(seconds: 60));
+  final responseBody = await response.stream.bytesToString();
 
-  try {
-    final response = await request.send().timeout(Duration(seconds: 60));
-
-    if (response.statusCode == 201) {
-      final responseData = await response.stream.bytesToString();
-      return http.Response(responseData, response.statusCode);
-    } else if (response.statusCode == 504) {
-      throw TimeoutException('Request timed out');
-    } else {
-      throw Exception('Failed to add product. ${response.statusCode}');
-    }
-  } on SocketException catch (e) {
-    throw Exception('Failed to add product. $e');
-  } catch (e) {
-    throw Exception('Failed to add product. $e');
+  if (response.statusCode == 201) {
+    return http.Response(responseBody, response.statusCode);
+  } else if (response.statusCode == 504) {
+    throw TimeoutException('Request timed out');
+  } else {
+    throw Exception(
+        jsonDecode(await response.stream.bytesToString())['message']);
   }
 }
 
+//add images to the new item
+Future<void> updateItemImages({
+  required String itemId,
+  required File coverImg,
+  required List<File> imgs,
+  required String contentType,
+}) async {
+  final token = await storage.read(key: 'token');
+  if (token == null) {
+    // Handle token not found error
+    throw Exception('Access token not found');
+  }
 
+  final url = 'https://unihub.azurewebsites.net/api/v1/items/$itemId';
+
+  final request = http.MultipartRequest('PATCH', Uri.parse(url))
+    ..headers['Authorization'] = 'Bearer $token';
+
+  request.files
+      .add(await http.MultipartFile.fromPath('coverImg', coverImg.path, contentType: MediaType.parse(contentType),));
+
+  for (final imgFile in imgs) {
+    final contentType = lookupMimeType(imgFile.path);
+    if (contentType == null || !contentType.startsWith('image/')) {
+      throw Exception('File $imgFile is not recognized as an image file.');
+    }
+    final fileName = imgFile.path.split('/').last;
+    request.files.add(await http.MultipartFile.fromPath('imgs', imgFile.path,
+        contentType: MediaType.parse(contentType)));
+  }
+
+  final response = await http.Client().send(request);
+
+  if (response.statusCode == 200) {
+    // Handle the updated item
+  } else if (response.statusCode == 504) {
+    throw TimeoutException('Request timed out');
+  } else {
+    throw Exception('Failed to update item. ${response.statusCode}');
+  }
+}
 
 //update item by the user published it
 Future<void> updateItem(
@@ -187,8 +209,6 @@ Future<void> updateItem(
     throw Exception('Failed to update item');
   }
 }
-
-
 
 //delete item by user published it
 Future<void> deleteItem(Map<String, dynamic> item) async {

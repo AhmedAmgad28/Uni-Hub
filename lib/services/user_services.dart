@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 
 // ignore: prefer_const_constructors
 final storage = FlutterSecureStorage();
@@ -79,12 +81,13 @@ Future<void> updateProfile(String name, String phone, File photo) async {
     request.fields['phone'] = phone;
   }
 
-  var stream = http.ByteStream(photo.openRead());
-  stream.cast();
-  var length = await photo.length();
-
-  var multiport = http.MultipartFile('photo', stream, length);
-  request.files.add(multiport);
+  // Add the photo to the request object
+  final contentType = lookupMimeType(photo.path);
+  if (contentType == null || !contentType.startsWith('image/')) {
+    throw Exception('File $photo is not recognized as an image file.');
+  }
+  request.files.add(await http.MultipartFile.fromPath('photo', photo.path,
+      contentType: MediaType.parse(contentType)));
 
   request.headers.addAll(headers);
   final response = await request.send();
