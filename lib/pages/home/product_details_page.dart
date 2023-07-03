@@ -376,10 +376,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "For Your Safety :",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w500),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              "For Your Safety :",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
+                            ),
                           ),
                           SizedBox(
                             height: 4,

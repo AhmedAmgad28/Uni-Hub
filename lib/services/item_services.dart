@@ -136,7 +136,7 @@ Future<http.Response> addProduct({
     throw TimeoutException('Request timed out');
   } else {
     throw Exception(
-        jsonDecode(await response.stream.bytesToString())['message']);
+        jsonDecode(responseBody)['message']);
   }
 }
 

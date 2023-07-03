@@ -17,7 +17,7 @@ Future<List<Items>> getFavourites() async {
   final response = await http.get(
     Uri.parse('https://unihub.azurewebsites.net/api/v1/items/Fav-Items'),
     headers: {'Authorization': 'Bearer $token'},
-  );
+  ).timeout(const Duration(seconds: 60));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body)['favItems'] as List<dynamic>;
@@ -27,18 +27,16 @@ Future<List<Items>> getFavourites() async {
   }
 }
 
-
-
-
 //update favourite list
 Future<void> updateFavoriteItem(String itemId) async {
   final token = await storage.read(key: 'token');
   if (token == null) {
     throw Exception('Access token not found');
   }
-  
+
   final response = await http.patch(
-    Uri.parse('https://unihub.azurewebsites.net/api/v1/items/Fav-Items/$itemId'),
+    Uri.parse(
+        'https://unihub.azurewebsites.net/api/v1/items/Fav-Items/$itemId'),
     headers: {'Authorization': 'Bearer $token'},
   );
 

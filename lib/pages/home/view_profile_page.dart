@@ -147,7 +147,7 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                                             builder: (context) => AlertDialog(
                                               title: const Text('Error'),
                                               content:  const Text(
-                                                  'Failed to create chat room. You can'),
+                                                  'We are sorry, but you can\'t chat with yourself here.'),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () =>
